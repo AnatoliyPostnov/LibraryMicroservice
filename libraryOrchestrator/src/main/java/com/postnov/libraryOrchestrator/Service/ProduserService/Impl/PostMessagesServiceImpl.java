@@ -5,10 +5,7 @@ import com.postnov.libraryOrchestrator.Service.EntityService.BookService;
 import com.postnov.libraryOrchestrator.Service.EntityService.EntityService;
 import com.postnov.libraryOrchestrator.Service.EntityService.LibraryCardService;
 import com.postnov.libraryOrchestrator.Service.EntityService.ReceivedBookService;
-import com.postnov.libraryOrchestrator.Service.ProduserService.BookProducerService;
-import com.postnov.libraryOrchestrator.Service.ProduserService.EntityProducerSender;
-import com.postnov.libraryOrchestrator.Service.ProduserService.LibraryCardProducerService;
-import com.postnov.libraryOrchestrator.Service.ProduserService.PostMessagesService;
+import com.postnov.libraryOrchestrator.Service.ProduserService.*;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -25,6 +22,8 @@ public class PostMessagesServiceImpl implements PostMessagesService {
 
     private final ReceivedBookService receivedBookService;
 
+    private final ReceivedBookProducerService receivedBookProducerService;
+
     private final LibraryCardProducerService libraryCardProducerService;
 
     private final BookProducerService bookProducerService;
@@ -33,11 +32,13 @@ public class PostMessagesServiceImpl implements PostMessagesService {
             LibraryCardService libraryCardService,
             BookService bookService,
             ReceivedBookService receivedBookService,
+            ReceivedBookProducerService receivedBookProducerService,
             LibraryCardProducerService libraryCardProducerService,
             BookProducerService bookProducerService) {
         this.libraryCardService = libraryCardService;
         this.bookService = bookService;
         this.receivedBookService = receivedBookService;
+        this.receivedBookProducerService = receivedBookProducerService;
         this.libraryCardProducerService = libraryCardProducerService;
         this.bookProducerService = bookProducerService;
     }
@@ -47,6 +48,7 @@ public class PostMessagesServiceImpl implements PostMessagesService {
     public void postMessages() {
         post(bookService, bookProducerService);
         post(libraryCardService, libraryCardProducerService);
+        post(receivedBookService, receivedBookProducerService);
     }
 
     private void post(EntityService entityService, EntityProducerSender producerSender) {

@@ -1,13 +1,22 @@
 package com.postnov.libraryOrchestrator.Service.EntityService.Impl;
 
 import com.postnov.libraryOrchestrator.Entity.JsonMessage;
+import com.postnov.libraryOrchestrator.Entity.ReceivedBookMessage;
+import com.postnov.libraryOrchestrator.Repository.ReceivedBookRepository;
 import com.postnov.libraryOrchestrator.Service.EntityService.ReceivedBookService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ReceivedBookServiceImpl implements ReceivedBookService {
+
+    private final ReceivedBookRepository receivedBookRepository;
+
+    public ReceivedBookServiceImpl(ReceivedBookRepository receivedBookRepository) {
+        this.receivedBookRepository = receivedBookRepository;
+    }
 
     @Override
     public void receivedBook(String receivedBook) {
@@ -45,17 +54,18 @@ public class ReceivedBookServiceImpl implements ReceivedBookService {
     }
 
     @Override
-    public void saveJsonInDB(String Json) {
-
+    public void saveJsonInDB(String json) {
+        receivedBookRepository.save(new ReceivedBookMessage(json));
     }
 
     @Override
     public List<JsonMessage> getJson() {
-        return null;
+        List<ReceivedBookMessage> receivedBookMessages = receivedBookRepository.findAll();
+        return receivedBookMessages.stream().map(x -> (JsonMessage) x).collect(Collectors.toList());
     }
 
     @Override
     public void deleteJson(JsonMessage json) {
-
+        receivedBookRepository.delete((ReceivedBookMessage) json);
     }
 }

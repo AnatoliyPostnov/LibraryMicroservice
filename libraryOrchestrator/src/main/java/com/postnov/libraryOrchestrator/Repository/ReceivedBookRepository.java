@@ -1,9 +1,9 @@
 package com.postnov.libraryOrchestrator.Repository;
 
-import com.postnov.libraryOrchestrator.Entity.AddLibraryCardJson;
+import com.postnov.libraryOrchestrator.Entity.ReceivedBookMessage;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface LibraryCardRepository extends JpaRepository<AddLibraryCardJson, Long> {
+public interface ReceivedBookRepository extends JpaRepository<ReceivedBookMessage, Long> {
 }

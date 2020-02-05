@@ -1,6 +1,7 @@
 package com.postnov.libraryOrchestrator.Controller;
 
 import com.postnov.libraryOrchestrator.Service.EntityService.ReceivedBookService;
+import com.postnov.libraryOrchestrator.Service.ProduserService.ReceivedBookProducerService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,15 +11,20 @@ public class ReceivedBookController {
 
     private final ReceivedBookService receivedBookService;
 
-    public ReceivedBookController(ReceivedBookService receivedBookService) {
+    private final ReceivedBookProducerService receivedBookProducerService;
+
+    public ReceivedBookController(
+            ReceivedBookService receivedBookService,
+            ReceivedBookProducerService receivedBookProducerService) {
         this.receivedBookService = receivedBookService;
+        this.receivedBookProducerService = receivedBookProducerService;
     }
 
     @ResponseStatus(HttpStatus.OK)
     @PostMapping("/received/book")
     public void receivedBook(
-            @RequestBody String receivedBook){
-        receivedBookService.receivedBook(receivedBook);
+            @RequestBody String receivedBook) {
+        receivedBookProducerService.sendReceivedBook(receivedBook);
     }
 
     @ResponseStatus(HttpStatus.OK)
@@ -26,15 +32,15 @@ public class ReceivedBookController {
     public void returnBooksByBookName(
             @RequestParam("passportNumber") String passportNumber,
             @RequestParam("passportSeries") String passportSeries,
-            @RequestParam("booksName") String booksName){
-        receivedBookService.returnBooks(passportNumber, passportSeries, booksName);
+            @RequestParam("booksName") String booksName) {
+        receivedBookProducerService.sendReturnBooks(passportNumber, passportSeries, booksName);
     }
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/received/books/filter")
     public String getReceivedBooksByPassportSNumberAndSeries(
             @RequestParam("passportNumber") String passportNumber,
-            @RequestParam("passportSeries") String passportSeries){
+            @RequestParam("passportSeries") String passportSeries) {
         return receivedBookService
                 .getReceivedBooksByPassportNumberAndSeries(passportNumber, passportSeries);
     }
@@ -43,7 +49,7 @@ public class ReceivedBookController {
     @GetMapping("/history/received/books/filter")
     public String getHistoryReceivedBooksByPassportNumberAndSeries(
             @RequestParam("passportNumber") String passportNumber,
-            @RequestParam("passportSeries") String passportSeries){
+            @RequestParam("passportSeries") String passportSeries) {
         return receivedBookService
                 .getHistoryReceivedBooksByPassportNumberAndSeries(passportNumber, passportSeries);
     }
@@ -61,8 +67,8 @@ public class ReceivedBookController {
     @DeleteMapping("/libraryCard/filter")
     public void deleteLibraryCardByPassportNumberAndSeries(
             @RequestParam("passportNumber") String passportNumber,
-            @RequestParam("passportSeries") String passportSeries){
-        receivedBookService.deleteLibraryCard(passportNumber, passportSeries);
+            @RequestParam("passportSeries") String passportSeries) {
+        receivedBookProducerService.sendDeleteLibraryCard(passportNumber, passportSeries);
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -70,6 +76,6 @@ public class ReceivedBookController {
     public void deletedBookByBookNameAndVolume(
             @RequestParam("bookName") String bookName,
             @RequestParam("bookVolume") Integer bookVolume) {
-        receivedBookService.deleteBookByBookNameAndVolume(bookName, bookVolume);
+        receivedBookProducerService.sendDeletedBook(bookName, bookVolume);
     }
 }
