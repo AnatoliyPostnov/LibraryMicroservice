@@ -15,8 +15,6 @@ import com.postnov.clientService.Service.OtherService.ConvertService;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.HashMap;
-import java.util.Map;
 
 @Service
 public class ClientServiceImpl implements ClientService {
@@ -55,6 +53,11 @@ public class ClientServiceImpl implements ClientService {
         return clientDto;
     }
 
+    @Override
+    public ClientDto getClientDtoByPassportNumberAndSeries(String number, String series) throws FindPassportByPassportNumberAndSeriesWasNotFoundException {
+        return makeClientDto(getClientByPassportNumberAndSeries(number, series));
+    }
+
     @Transactional
     @Override
     public Client save(ClientDto clientDto) {
@@ -78,14 +81,10 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public Map<String, Object> getMapClientWithPassportByPassportNumberAndSeries(
-            String number, String series)
+    public Client getClientByPassportNumberAndSeries(String number, String series)
             throws FindPassportByPassportNumberAndSeriesWasNotFoundException {
-        Map<String, Object> clientWithPassport = new HashMap<>();
         Passport passport = passportService.getPassportByPassportNumberAndSeries(number, series);
-        Client client = getClientByPassportId(passport.getId());
-        clientWithPassport.put("Passport", passport);
-        clientWithPassport.put("Client", client);
-        return clientWithPassport;
+        return getClientByPassportId(passport.getId());
     }
+
 }

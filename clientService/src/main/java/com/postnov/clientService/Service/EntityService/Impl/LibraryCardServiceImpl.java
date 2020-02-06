@@ -2,10 +2,8 @@ package com.postnov.clientService.Service.EntityService.Impl;
 
 import com.postnov.clientService.Dto.ClientDto;
 import com.postnov.clientService.Dto.LibraryCardDto;
-import com.postnov.clientService.Dto.PassportDto;
 import com.postnov.clientService.Entity.Client;
 import com.postnov.clientService.Entity.LibraryCard;
-import com.postnov.clientService.Entity.Passport;
 import com.postnov.clientService.Exception.notFoundException.FindLibraryCardByClientIdWasNotFoundException;
 import com.postnov.clientService.Exception.notFoundException.FindLibraryCardByIdWasNotFoundException;
 import com.postnov.clientService.Exception.notFoundException.FindPassportByPassportNumberAndSeriesWasNotFoundException;
@@ -31,20 +29,13 @@ public class LibraryCardServiceImpl implements LibraryCardService {
 
     private final ConvertService<LibraryCardDto, LibraryCard> convertServiceLibraryCard;
 
-    private final ConvertService<ClientDto, Client> convertServiceClient;
-
-    private final ConvertService<PassportDto, Passport> convertServicePassport;
-
-    public LibraryCardServiceImpl(LibraryCardRepository libraryCardRepository,
-                                  ClientService clientService,
-                                  ConvertService<LibraryCardDto, LibraryCard> convertServiceLibraryCard,
-                                  ConvertService<ClientDto, Client> convertServiceClient,
-                                  ConvertService<PassportDto, Passport> convertServicePassport) {
+    public LibraryCardServiceImpl(
+            LibraryCardRepository libraryCardRepository,
+            ClientService clientService,
+            ConvertService<LibraryCardDto, LibraryCard> convertServiceLibraryCard) {
         this.libraryCardRepository = libraryCardRepository;
         this.clientService = clientService;
         this.convertServiceLibraryCard = convertServiceLibraryCard;
-        this.convertServiceClient = convertServiceClient;
-        this.convertServicePassport = convertServicePassport;
     }
 
     @Override
@@ -58,35 +49,9 @@ public class LibraryCardServiceImpl implements LibraryCardService {
     @Override
     public void deleteLibraryCard(String number, String series)
             throws FindPassportByPassportNumberAndSeriesWasNotFoundException {
-        Map<String, Object> clientWithPassport =
-                clientService.getMapClientWithPassportByPassportNumberAndSeries(number, series);
-        Client client = (Client) clientWithPassport.get("Client");
+        Client client = clientService.getClientByPassportNumberAndSeries(number, series);
         libraryCardRepository.deleteByClientId(client.getId());
         clientService.deleteClient(client);
-    }
-
-    @Override
-    public Map<String, Object> getMapLibraryCardWithLibraryCardDtoByPassportNumberAndSeries(String number, String series)
-            throws FindPassportByPassportNumberAndSeriesWasNotFoundException {
-        Map<String, Object> mapLibraryCardWithClientWithPassport =
-                getMapLibraryCardWithClientWithPassportByPassportNumberAndSeries(number, series);
-
-        ClientDto clientDto = convertServiceClient.convertToDto(
-                (Client) mapLibraryCardWithClientWithPassport.get("Client"), ClientDto.class);
-        clientDto.setPassport(convertServicePassport.convertToDto(
-                (Passport) mapLibraryCardWithClientWithPassport.get("Passport"), PassportDto.class));
-
-        LibraryCardDto libraryCardDto =
-                convertServiceLibraryCard.convertToDto(
-                        (LibraryCard) mapLibraryCardWithClientWithPassport.get("LibraryCard"),
-                        LibraryCardDto.class);
-        libraryCardDto.setClient(clientDto);
-
-        Map<String, Object> resultMap = new HashMap<>();
-        resultMap.put("LibraryCard", mapLibraryCardWithClientWithPassport.get("LibraryCard"));
-        resultMap.put("LibraryCardDto", libraryCardDto);
-
-        return resultMap;
     }
 
     @Override
@@ -97,6 +62,47 @@ public class LibraryCardServiceImpl implements LibraryCardService {
                 .convertToDto(libraryCard, LibraryCardDto.class);
         libraryCardDto.setClient(clientDto);
         return libraryCardDto;
+    }
+
+    @Override
+    public LibraryCardDto getLibraryCardDtoByPassportNumberAndSeries(String number, String series) throws FindPassportByPassportNumberAndSeriesWasNotFoundException {
+        LibraryCardDto libraryCardDto = convertServiceLibraryCard
+                .convertToDto(
+                        getLibraryCardByPassportNumberAndSeries(number, series),
+                        LibraryCardDto.class);
+        libraryCardDto.setClient(clientService.getClientDtoByPassportNumberAndSeries(number, series));
+        return libraryCardDto;
+    }
+
+    @Transactional
+    @Override
+    public LibraryCard getLibraryCardById(Long Id) {
+        return libraryCardRepository.findLibraryCardById(Id).orElseThrow(
+                () -> new FindLibraryCardByIdWasNotFoundException(Id));
+    }
+
+    @Override
+    public LibraryCard getLibraryCardByPassportNumberAndSeries(String number, String series)
+            throws FindPassportByPassportNumberAndSeriesWasNotFoundException {
+        return getLibraryCardByClientId(
+                clientService.getClientByPassportNumberAndSeries(number, series).getId());
+    }
+
+    @Transactional
+    @Override
+    public LibraryCard getLibraryCardByClientId(Long clientId) {
+        return libraryCardRepository.findLibraryCardByClientId(
+                clientId).orElseThrow(
+                () -> new FindLibraryCardByClientIdWasNotFoundException(clientId));
+    }
+
+    @Override
+    public Long getLibraryCardIdByLibraryCardDto(LibraryCardDto libraryCardDto)
+            throws FindPassportByPassportNumberAndSeriesWasNotFoundException {
+        Client client = clientService.getClientByPassportNumberAndSeries(
+                libraryCardDto.getClient().getPassport().getNumber(),
+                libraryCardDto.getClient().getPassport().getSeries());
+        return getLibraryCardByClientId(client.getId()).getId();
     }
 
     @Transactional
@@ -114,42 +120,9 @@ public class LibraryCardServiceImpl implements LibraryCardService {
         return Optional.empty();
     }
 
-    @Transactional
     @Override
-    public LibraryCard getLibraryCardById(Long Id) {
-        return libraryCardRepository.findLibraryCardById(Id).orElseThrow(
-                () -> new FindLibraryCardByIdWasNotFoundException(Id));
-    }
-
-    @Override
-    public LibraryCard getLibraryCardByPassportNumberAndSeries(String number, String series)
-            throws FindPassportByPassportNumberAndSeriesWasNotFoundException {
-        Map<String, Object> mapLibraryCardWithClientWithPassport =
-                getMapLibraryCardWithClientWithPassportByPassportNumberAndSeries(number, series);
-        return (LibraryCard) mapLibraryCardWithClientWithPassport.get("LibraryCard");
-    }
-
-    @Transactional
-    @Override
-    public LibraryCard getLibraryCardByClientId(Long clientId) {
-        return libraryCardRepository.findLibraryCardByClientId(
-                clientId).orElseThrow(
-                () -> new FindLibraryCardByClientIdWasNotFoundException(clientId));
-    }
-
-    @Override
-    public Long getLibraryCardIdByLibraryCardDto(LibraryCardDto libraryCardDto)
-            throws FindPassportByPassportNumberAndSeriesWasNotFoundException {
-        Client client = (Client) getMapLibraryCardWithClientWithPassportByPassportNumberAndSeries(
-                libraryCardDto.getClient().getPassport().getNumber(),
-                libraryCardDto.getClient().getPassport().getSeries())
-                .get("Client");
-        return getLibraryCardByClientId(client.getId()).getId();
-    }
-
-    @Override
-    public Set<LibraryCardDto> getLibraryCards(Long fromLibraryCardsId, Long toLibraryCardId) {
-        Set<LibraryCardDto> libraryCardsDto = new HashSet<>();
+    public List<LibraryCardDto> getLibraryCards(Long fromLibraryCardsId, Long toLibraryCardId) {
+        List<LibraryCardDto> libraryCardsDto = new ArrayList<>();
         for (Long i = fromLibraryCardsId; i <= toLibraryCardId; ++i) {
             try {
                 libraryCardsDto.add(getLibraryCardDtoById(i));
@@ -159,17 +132,4 @@ public class LibraryCardServiceImpl implements LibraryCardService {
         }
         return libraryCardsDto;
     }
-
-    @Override
-    public Map<String, Object> getMapLibraryCardWithClientWithPassportByPassportNumberAndSeries(
-            String number, String series)
-            throws FindPassportByPassportNumberAndSeriesWasNotFoundException {
-        Map<String, Object> resultMap =
-                clientService.getMapClientWithPassportByPassportNumberAndSeries(number, series);
-        Client client = (Client) resultMap.get("Client");
-        LibraryCard libraryCard = getLibraryCardByClientId(client.getId());
-        resultMap.put("LibraryCard", libraryCard);
-        return resultMap;
-    }
-
 }

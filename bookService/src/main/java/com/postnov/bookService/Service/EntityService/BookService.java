@@ -5,7 +5,6 @@ import com.postnov.bookService.Entity.Book;
 import com.postnov.bookService.Exception.notFoundException.FindBookByIdWasNotFoundException;
 
 import java.util.List;
-import java.util.Set;
 
 public interface BookService {
 
@@ -36,6 +35,8 @@ public interface BookService {
     Book getReceivedBookById(Long Id);
 
     Long getBookIdByBookDto(BookDto bookDto);
+
+    Long getBookIdByBookNameAndBookVolume(String bookName, Integer bookVolume);
 
     List<BookDto> getBooksDtoByAuthorNameAndAuthorSurname(String name, String surname) throws FindBookByIdWasNotFoundException;
 

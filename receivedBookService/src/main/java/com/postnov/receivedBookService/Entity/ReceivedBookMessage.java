@@ -1,12 +1,12 @@
-package com.postnov.libraryOrchestrator.Entity;
+package com.postnov.receivedBookService.Entity;
 
 import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
-public class ReceivedBookMessage implements JsonMessage {
+public class ReceivedBookMessage {
 
-    @Id
+    @javax.persistence.Id
     @GeneratedValue
     Long Id;
 
@@ -14,7 +14,8 @@ public class ReceivedBookMessage implements JsonMessage {
     @Lob
     String message;
 
-    public ReceivedBookMessage(){}
+    public ReceivedBookMessage() {
+    }
 
     public ReceivedBookMessage(String message) {
         this.message = message;

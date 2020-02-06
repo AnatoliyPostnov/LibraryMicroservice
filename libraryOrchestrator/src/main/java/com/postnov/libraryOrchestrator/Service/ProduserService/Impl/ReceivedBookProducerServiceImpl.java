@@ -30,21 +30,21 @@ public class ReceivedBookProducerServiceImpl implements ReceivedBookProducerServ
 
     @Override
     public void sendReceivedBook(String receivedBook) {
-        send(String.format("receivedBook %s", receivedBook));
+        send(String.format("receivedBook&%s", receivedBook));
     }
 
     @Override
     public void sendReturnBooks(String passportNumber, String passportSeries, String bookName) {
-        send(String.format("returnBooks %s %s %s", passportNumber, passportSeries, bookName));
+        send(String.format("returnBooks&%s&%s&%s", passportNumber, passportSeries, bookName));
     }
 
     @Override
     public void sendDeleteLibraryCard(String passportNumber, String passportSeries) {
-        send(String.format("deleteLibraryCard %s %s", passportNumber, passportSeries));
+        send(String.format("deleteLibraryCard&%s&%s", passportNumber, passportSeries));
     }
 
     @Override
     public void sendDeletedBook(String bookName, Integer bookVolume) {
-        send(String.format("deletedBook %s %s", bookName, bookVolume));
+        send(String.format("deletedBook&%s&%s", bookName, bookVolume));
     }
 }

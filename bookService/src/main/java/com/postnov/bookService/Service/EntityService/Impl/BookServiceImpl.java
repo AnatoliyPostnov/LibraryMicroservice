@@ -153,6 +153,11 @@ public class BookServiceImpl implements BookService {
         return getBookByBookNameAndVolume(bookDto.getName(), bookDto.getVolume()).getId();
     }
 
+    @Override
+    public Long getBookIdByBookNameAndBookVolume(String bookName, Integer bookVolume) {
+        return getBookByBookNameAndVolume(bookName, bookVolume).getId();
+    }
+
     @Transactional
     @Override
     public List<Long> getReceivedBooksIdByBookName(String bookName) {

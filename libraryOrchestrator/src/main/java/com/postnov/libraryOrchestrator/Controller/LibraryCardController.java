@@ -32,9 +32,9 @@ public class LibraryCardController {
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/libraryCard/filter")
     public String getLibraryCardByPassportNumberAndSeries(
-            @RequestParam("number") String number,
-            @RequestParam("series") String series){
-        return libraryCardService.getLibraryCardDtoByPassportNumberAndSeries(number, series);
+            @RequestParam("passportNumber") String passportNumber,
+            @RequestParam("passportSeries") String passportSeries){
+        return libraryCardService.getLibraryCardDtoByPassportNumberAndSeries(passportNumber, passportSeries);
     }
 
     @ResponseStatus(HttpStatus.OK)

@@ -17,13 +17,10 @@ public interface LibraryCardService {
     void deleteLibraryCard(String number, String series)
             throws FindPassportByPassportNumberAndSeriesWasNotFoundException;
 
-    Map<String, Object> getMapLibraryCardWithLibraryCardDtoByPassportNumberAndSeries(
-            String number, String series)
-            throws FindPassportByPassportNumberAndSeriesWasNotFoundException;
-
     LibraryCardDto getLibraryCardDtoById(Long id) throws Exception;
 
-    Optional<LibraryCard> save(LibraryCardDto libraryCardDto);
+    LibraryCardDto getLibraryCardDtoByPassportNumberAndSeries(String number, String series)
+            throws FindPassportByPassportNumberAndSeriesWasNotFoundException;
 
     LibraryCard getLibraryCardByPassportNumberAndSeries(String number, String series)
             throws FindPassportByPassportNumberAndSeriesWasNotFoundException;
@@ -35,10 +32,8 @@ public interface LibraryCardService {
     Long getLibraryCardIdByLibraryCardDto(LibraryCardDto libraryCardDto)
             throws FindPassportByPassportNumberAndSeriesWasNotFoundException;
 
-    Set<LibraryCardDto> getLibraryCards(Long fromLibraryCardsId, Long toLibraryCardId);
+    Optional<LibraryCard> save(LibraryCardDto libraryCardDto);
 
-    Map<String, Object> getMapLibraryCardWithClientWithPassportByPassportNumberAndSeries(
-            String number, String series)
-            throws FindPassportByPassportNumberAndSeriesWasNotFoundException;
+    List<LibraryCardDto> getLibraryCards(Long fromLibraryCardsId, Long toLibraryCardId);
 
 }

@@ -7,3 +7,9 @@ create table received_book
     date_of_book_return         date,
     primary key (id)
 );
+create table received_book_message
+(
+    id      int8 not null,
+    message text,
+    primary key (id)
+);

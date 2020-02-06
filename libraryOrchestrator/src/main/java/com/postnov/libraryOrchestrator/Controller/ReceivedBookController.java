@@ -37,7 +37,7 @@ public class ReceivedBookController {
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @GetMapping("/received/books/filter")
+    @GetMapping("/received/book/filter")
     public String getReceivedBooksByPassportSNumberAndSeries(
             @RequestParam("passportNumber") String passportNumber,
             @RequestParam("passportSeries") String passportSeries) {
@@ -55,12 +55,12 @@ public class ReceivedBookController {
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @GetMapping("/all/received/books/filter")
+    @GetMapping("/received/books/filter")
     public String getAllReceivedBooks(
             @RequestParam("fromReceivedBookId") Long fromReceivedBookId,
-            @RequestParam("toReceivedBookId") Long toReceivedBookId) throws Exception {
+            @RequestParam("toReceivedBookId") Long toReceivedBookId) {
         return receivedBookService
-                .getAllReceivedBook(fromReceivedBookId, toReceivedBookId, false);
+                .getAllReceivedBook(fromReceivedBookId, toReceivedBookId);
     }
 
     @ResponseStatus(HttpStatus.OK)
