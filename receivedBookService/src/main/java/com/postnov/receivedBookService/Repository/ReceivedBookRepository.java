@@ -6,17 +6,24 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import javax.persistence.Column;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 public interface ReceivedBookRepository extends JpaRepository<ReceivedBook, Long> {
 
     @Modifying
-    @Query(value = "update ReceivedBook set dateOfBookReturn=:dateOfBookReturn")
+    @Query(value = "update ReceivedBook rb set dateOfBookReturn = :dateOfBookReturn " +
+            "where rb.bookId = :bookId and " +
+            "rb.libraryCardId = :libraryCardId and " +
+            "rb.dateOfBookReceiving = :dateOfBookReceiving and " +
+            "rb.dateOfBookReturn = null")
     void returnBook(
-            @Param("dateOfBookReturn") LocalDate dateOfBookReturn);
+            @Param("dateOfBookReturn") LocalDate dateOfBookReturn,
+            @Param("dateOfBookReceiving") LocalDate dateOfBookReceiving,
+            @Param("bookId") Long bookId,
+            @Param("libraryCardId") Long libraryCardId);
 
     @Query(value = "select rb from ReceivedBook rb " +
             "where rb.bookId = :bookId and rb.libraryCardId = :libraryCardId " +

@@ -17,6 +17,9 @@ public class LibraryCardServiceImpl implements LibraryCardService {
     @Value("${urlGetLibraryCardIdFilterNumberAndSeries}")
     private String urlGetLibraryCardIdFilterNumberAndSeries;
 
+    @Value("${urlDeleteLibraryCardFilterNumberAndSeries}")
+    private String urlDeleteLibraryCardFilterNumberAndSeries;
+
     public LibraryCardServiceImpl(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
     }
@@ -33,4 +36,9 @@ public class LibraryCardServiceImpl implements LibraryCardService {
         return restTemplate.getForObject(uri, Long.class);
     }
 
+    @Override
+    public void deleteLibraryCard(String number, String series) {
+        String uri = String.format(urlDeleteLibraryCardFilterNumberAndSeries, number, series);
+        restTemplate.delete(uri);
+    }
 }

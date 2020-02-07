@@ -13,16 +13,20 @@ public interface ReceivedBookService {
 
     List<ReceivedBookDto> getHistoryReceivedBooksByPassportNumberAndSeries(String passportNumber, String passportSeries);
 
+    List<ReceivedBookDto> convertReceivedBooksToReceivedBooksDto(List<ReceivedBook> receivedBooks);
+
     List<ReceivedBookDto> getAllReceivedBook(Long fromReceivedBookId, Long toReceivedBookId, Boolean historyOrNot);
 
     List<ReceivedBookDto> getReceivedBooks(String number, String series, Boolean historyOrNot);
 
-    void receivedBook(ReceivedBookDto receivedBookDto)
-            throws FindPassportByPassportNumberAndSeriesWasNotFoundException;
+    void receivedBook(ReceivedBookDto receivedBookDto);
 
-    void returnBooks(String number, String series, String bookName)
-            throws FindPassportByPassportNumberAndSeriesWasNotFoundException;
+    void returnBooks(String number, String series, String bookName);
 
     void saveReceivedBookMessage(String message);
+
+    void deleteLibraryCard(String number, String series);
+
+    void deleteBookByBookNameAndVolume(String name, Integer volume);
 
 }

@@ -4,6 +4,7 @@ import com.postnov.bookService.Dto.AuthorDto;
 import com.postnov.bookService.Dto.BookDto;
 import com.postnov.bookService.Entity.Author;
 import com.postnov.bookService.Entity.Book;
+import com.postnov.bookService.Entity.ListReceivedBookIdDto;
 import com.postnov.bookService.Exception.notFoundException.FindBookByIdWasNotFoundException;
 import com.postnov.bookService.Exception.notFoundException.FindReceivedBookByIdWasNotFoundException;
 import com.postnov.bookService.Exception.notFoundException.FindReceivedBookByNameAndVolumeWasNotFoundException;
@@ -72,6 +73,13 @@ public class BookServiceImpl implements BookService {
     public void deleteBookByBook(Book book) {
         authorService.deleteAuthorByBook(book);
         bookRepository.deleteBookByNameAndVolume(book.getName(), book.getVolume());
+    }
+
+    @Transactional
+    @Override
+    public void deleteBookByBookId(Long bookId) {
+        authorService.deleteAuthorByBookId(bookId);
+        bookRepository.deleteBookById(bookId);
     }
 
     @Transactional
@@ -160,8 +168,8 @@ public class BookServiceImpl implements BookService {
 
     @Transactional
     @Override
-    public List<Long> getReceivedBooksIdByBookName(String bookName) {
-        return bookRepository.findReceivedBooksIdByBooksName(bookName);
+    public ListReceivedBookIdDto getReceivedBooksIdByBookName(String bookName) {
+        return new ListReceivedBookIdDto(bookRepository.findReceivedBooksIdByBooksName(bookName));
     }
 
     @Override

@@ -25,9 +25,17 @@ public class CommunicateWithReceivedBookService {
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/CommunicateWithReceivedBook/get/Id")
     public Long getLibraryCardIdByPassportNumberAndSeries(
-            @RequestParam("PassportNumber") String passportNumber,
-            @RequestParam("PassportSeries") String passportSeries) throws Exception {
+            @RequestParam("passportNumber") String passportNumber,
+            @RequestParam("passportSeries") String passportSeries) throws Exception {
         return libraryCardService.getLibraryCardByPassportNumberAndSeries(passportNumber, passportSeries).getId();
     }
 
+    @ResponseStatus(HttpStatus.OK)
+    @DeleteMapping("/CommunicateWithReceivedBook/delete/filter")
+    public void deleteLibraryCard(
+            @RequestParam("passportNumber") String passportNumber,
+            @RequestParam("passportSeries") String passportSeries) throws Exception {
+        System.out.println(passportSeries);
+        libraryCardService.deleteLibraryCard(passportNumber, passportSeries);
+    }
 }

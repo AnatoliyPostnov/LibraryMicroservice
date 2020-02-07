@@ -28,7 +28,7 @@ public class ReceivedBookController {
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @PostMapping("/return/books/filter")
+    @PostMapping("/return/book/filter")
     public void returnBooksByBookName(
             @RequestParam("passportNumber") String passportNumber,
             @RequestParam("passportSeries") String passportSeries,
@@ -37,7 +37,7 @@ public class ReceivedBookController {
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @GetMapping("/received/book/filter")
+    @GetMapping("/received/books/filter")
     public String getReceivedBooksByPassportSNumberAndSeries(
             @RequestParam("passportNumber") String passportNumber,
             @RequestParam("passportSeries") String passportSeries) {
@@ -55,7 +55,7 @@ public class ReceivedBookController {
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @GetMapping("/received/books/filter")
+    @GetMapping("all//received/books/filter")
     public String getAllReceivedBooks(
             @RequestParam("fromReceivedBookId") Long fromReceivedBookId,
             @RequestParam("toReceivedBookId") Long toReceivedBookId) {

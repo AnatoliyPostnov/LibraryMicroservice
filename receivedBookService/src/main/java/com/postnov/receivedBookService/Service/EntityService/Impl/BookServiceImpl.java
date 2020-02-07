@@ -1,6 +1,6 @@
 package com.postnov.receivedBookService.Service.EntityService.Impl;
 
-import com.postnov.receivedBookService.ConsumerEntity.ListReceivedBookId;
+import com.postnov.receivedBookService.Dto.ListReceivedBookIdDto;
 import com.postnov.receivedBookService.Dto.BookDto;
 import com.postnov.receivedBookService.Service.EntityService.BookService;
 import org.springframework.beans.factory.annotation.Value;
@@ -27,6 +27,9 @@ public class BookServiceImpl implements BookService {
     @Value("${urlGetReceivedBooksIdByBookName}")
     private String urlGetReceivedBooksIdByBookName;
 
+    @Value("${urlDeleteBookByBookId}")
+    private String urlDeleteBookByBookId;
+
     public BookServiceImpl(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
     }
@@ -42,8 +45,15 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
+    public void deleteBookByBookId(Long bookId) {
+        String uri = String.format(urlDeleteBookByBookId, bookId);
+        restTemplate.delete(uri);
+    }
+
+    @Override
     public BookDto getReceivedBookDtoById(Long Id) {
         String uri = String.format(urlGetBookDtoFilterId, Id);
+        System.out.println(uri);
         return restTemplate.getForObject(uri, BookDto.class);
     }
 
@@ -54,9 +64,9 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public ListReceivedBookId getReceivedBooksIdByBookName(String bookName) {
+    public ListReceivedBookIdDto getReceivedBooksIdByBookName(String bookName) {
         String uri = String.format(urlGetReceivedBooksIdByBookName, bookName);
-        return restTemplate.getForObject(uri, ListReceivedBookId.class);
+        return restTemplate.getForObject(uri, ListReceivedBookIdDto.class);
     }
 
 }

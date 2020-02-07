@@ -45,19 +45,30 @@ public class AuthorServiceImpl implements AuthorService {
         bookAuthorService.saveAuthorsIdAndBookId(authors_id, book_id);
     }
 
-    @Transactional
+
     @Override
     public void deleteAuthorByBook(Book book) {
-        for (Author author : getAuthorsByBook(book)) {
+        deleteAuthorByBookId(book.getId());
+    }
+
+    @Transactional
+    @Override
+    public void deleteAuthorByBookId(Long bookId) {
+        for (Author author : getAuthorsByBookId(bookId)) {
             bookAuthorService.deleteBook_AuthorByAuthorId(author.getId());
             authorRepository.deleteAuthorById(author.getId());
         }
     }
 
-    @Transactional
     @Override
     public List<Author> getAuthorsByBook(Book book) {
-        List<Long> authorsId = bookAuthorService.getAuthorsIdByBookId(book.getId());
+        return getAuthorsByBookId(book.getId());
+    }
+
+    @Transactional
+    @Override
+    public List<Author> getAuthorsByBookId(Long bookId){
+        List<Long> authorsId = bookAuthorService.getAuthorsIdByBookId(bookId);
         List<Author> authors = new ArrayList<>();
         for (Long authorId : authorsId) {
             authors.add(authorRepository.findAuthorById(authorId)

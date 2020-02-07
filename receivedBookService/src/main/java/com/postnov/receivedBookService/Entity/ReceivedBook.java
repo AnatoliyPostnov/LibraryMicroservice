@@ -2,6 +2,7 @@ package com.postnov.receivedBookService.Entity;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.Objects;
 
 @Entity
 public class ReceivedBook {
@@ -37,39 +38,45 @@ public class ReceivedBook {
         return id;
     }
 
-    public void setId(Long id) {
+    public ReceivedBook setId(Long id) {
         this.id = id;
+        return this;
     }
 
     public LocalDate getDateOfBookReceiving() {
         return dateOfBookReceiving;
     }
 
-    public void setDateOfBookReceiving(LocalDate dateOfBookReceiving) {
+    public ReceivedBook setDateOfBookReceiving(LocalDate dateOfBookReceiving) {
         this.dateOfBookReceiving = dateOfBookReceiving;
+        return this;
     }
 
     public LocalDate getDateOfBookReturn() {
         return dateOfBookReturn;
     }
 
-    public void setDateOfBookReturn(LocalDate dateOfBookReturn) {
+    public ReceivedBook setDateOfBookReturn(LocalDate dateOfBookReturn) {
         this.dateOfBookReturn = dateOfBookReturn;
+        return this;
     }
 
     public Long getBookId() {
         return bookId;
     }
 
-    public void setBookId(Long bookId) {
+    public ReceivedBook setBookId(Long bookId) {
         this.bookId = bookId;
+        return this;
     }
 
     public Long getLibraryCardId() {
         return libraryCardId;
     }
 
-    public void setLibraryCardId(Long libraryCardId) {
+    public ReceivedBook setLibraryCardId(Long libraryCardId) {
         this.libraryCardId = libraryCardId;
+        return this;
     }
+
 }

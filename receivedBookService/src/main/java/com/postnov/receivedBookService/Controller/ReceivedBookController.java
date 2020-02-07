@@ -36,7 +36,6 @@ public class ReceivedBookController {
         return receivedBookService
                 .getHistoryReceivedBooksByPassportNumberAndSeries(passportNumber, passportSeries);
     }
-
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/all/received/books/filter")
     public List<ReceivedBookDto> getAllReceivedBooks(
@@ -45,5 +44,4 @@ public class ReceivedBookController {
         return receivedBookService
                 .getAllReceivedBook(fromReceivedBookId, toReceivedBookId, false);
     }
-
 }

@@ -2,6 +2,7 @@ package com.postnov.bookService.Service.EntityService;
 
 import com.postnov.bookService.Dto.BookDto;
 import com.postnov.bookService.Entity.Book;
+import com.postnov.bookService.Entity.ListReceivedBookIdDto;
 import com.postnov.bookService.Exception.notFoundException.FindBookByIdWasNotFoundException;
 
 import java.util.List;
@@ -11,6 +12,8 @@ public interface BookService {
     void saveBooks(List<BookDto> booksDto);
 
     void deleteBookByBook(Book book);
+
+    void deleteBookByBookId(Long bookId);
 
     void receivedBook(BookDto bookDto);
 
@@ -42,6 +45,6 @@ public interface BookService {
 
     List<BookDto> getBooksDto(Long fromBookId, Long toBookId);
 
-    List<Long> getReceivedBooksIdByBookName(String booksName);
+    ListReceivedBookIdDto getReceivedBooksIdByBookName(String booksName);
 
 }

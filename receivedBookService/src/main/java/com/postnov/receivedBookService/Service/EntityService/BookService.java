@@ -1,9 +1,7 @@
 package com.postnov.receivedBookService.Service.EntityService;
 
-import com.postnov.receivedBookService.ConsumerEntity.ListReceivedBookId;
+import com.postnov.receivedBookService.Dto.ListReceivedBookIdDto;
 import com.postnov.receivedBookService.Dto.BookDto;
-
-import java.util.List;
 
 public interface BookService {
 
@@ -11,9 +9,12 @@ public interface BookService {
 
     void returnBook(Long bookId);
 
+    void deleteBookByBookId(Long bookId);
+
     BookDto getReceivedBookDtoById(Long Id);
 
     Long getBookIdByBookNameAndBookVolume(String bookName, Integer bookVolume);
 
-    ListReceivedBookId getReceivedBooksIdByBookName(String bookName);
+    ListReceivedBookIdDto getReceivedBooksIdByBookName(String bookName);
+
 }

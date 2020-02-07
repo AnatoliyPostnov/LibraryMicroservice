@@ -1,7 +1,6 @@
 package com.postnov.clientService.Service.ConsumerService.Impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.postnov.clientService.Dto.LibraryCardDto;
 import com.postnov.clientService.Dto.LibraryCardsDto;
 import com.postnov.clientService.Service.ConsumerService.ConsumerAddClientJsonService;
 import com.postnov.clientService.Service.EntityService.LibraryCardService;

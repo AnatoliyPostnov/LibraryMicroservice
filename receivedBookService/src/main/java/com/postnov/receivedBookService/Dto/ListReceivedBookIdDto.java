@@ -1,11 +1,13 @@
-package com.postnov.receivedBookService.ConsumerEntity;
+package com.postnov.receivedBookService.Dto;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ListReceivedBookId {
+public class ListReceivedBookIdDto {
 
     private List<Long> receivedBookId = new ArrayList<>();
+
+    public ListReceivedBookIdDto(){}
 
     public List<Long> getReceivedBookId() {
         return receivedBookId;

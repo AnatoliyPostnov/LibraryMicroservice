@@ -18,6 +18,8 @@ public interface BookRepository extends JpaRepository<Book, Long> {
             @Param("name") String name,
             @Param("volume") Integer volume);
 
+    void deleteBookById(@Param("Id") Long Id);
+
     @Modifying
     @Query(value = "update Book set isReceivedBook = 'true' where id = :Id")
     void receivedBookById(

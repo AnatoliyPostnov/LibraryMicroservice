@@ -13,7 +13,11 @@ public interface AuthorService {
 
     void deleteAuthorByBook(Book book);
 
+    void deleteAuthorByBookId(Long bookId);
+
     List<Author> getAuthorsByBook(Book book);
+
+    List<Author> getAuthorsByBookId(Long bookId);
 
     List<Author> getAuthorsByNameAndSurname(String name, String surname);
 }
