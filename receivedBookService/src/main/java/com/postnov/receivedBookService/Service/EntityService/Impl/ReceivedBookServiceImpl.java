@@ -4,9 +4,6 @@ import com.postnov.receivedBookService.Dto.BookDto;
 import com.postnov.receivedBookService.Dto.LibraryCardDto;
 import com.postnov.receivedBookService.Dto.ReceivedBookDto;
 import com.postnov.receivedBookService.Entity.ReceivedBook;
-import com.postnov.receivedBookService.Entity.ReceivedBookMessage;
-import com.postnov.receivedBookService.Exception.notFoundException.FindPassportByPassportNumberAndSeriesWasNotFoundException;
-import com.postnov.receivedBookService.Repository.ReceivedBookMessageRepository;
 import com.postnov.receivedBookService.Repository.ReceivedBookRepository;
 import com.postnov.receivedBookService.Service.EntityService.BookService;
 import com.postnov.receivedBookService.Service.EntityService.LibraryCardService;
@@ -28,33 +25,23 @@ public class ReceivedBookServiceImpl implements ReceivedBookService {
 
     private final Logger logger = LoggerFactory.getLogger(ReceivedBookServiceImpl.class);
 
-    private final ReceivedBookRepository receivedBookRepository;
-
-    private final ReceivedBookMessageRepository receivedBookMessageRepository;
-
     private final ConvertService<ReceivedBookDto, ReceivedBook> convertServiceReceivedBook;
 
     private final BookService bookService;
 
     private final LibraryCardService libraryCardService;
 
+    private final ReceivedBookRepository receivedBookRepository;
+
     public ReceivedBookServiceImpl(
             ReceivedBookRepository receivedBookRepository,
-            ReceivedBookMessageRepository receivedBookMessageRepository,
             ConvertService<ReceivedBookDto, ReceivedBook> convertServiceReceivedBook,
             BookService bookService,
             LibraryCardService libraryCardService) {
-        this.receivedBookRepository = receivedBookRepository;
-        this.receivedBookMessageRepository = receivedBookMessageRepository;
         this.convertServiceReceivedBook = convertServiceReceivedBook;
         this.bookService = bookService;
         this.libraryCardService = libraryCardService;
-    }
-
-
-    @Override
-    public void saveReceivedBookMessage(String message) {
-        receivedBookMessageRepository.save(new ReceivedBookMessage(message));
+        this.receivedBookRepository = receivedBookRepository;
     }
 
     @Override

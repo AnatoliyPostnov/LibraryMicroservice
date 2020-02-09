@@ -23,8 +23,6 @@ public interface ReceivedBookService {
 
     void returnBooks(String number, String series, String bookName);
 
-    void saveReceivedBookMessage(String message);
-
     void deleteLibraryCard(String number, String series);
 
     void deleteBookByBookNameAndVolume(String name, Integer volume);

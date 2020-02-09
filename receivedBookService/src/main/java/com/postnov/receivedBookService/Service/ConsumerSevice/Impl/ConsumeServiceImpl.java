@@ -3,6 +3,7 @@ package com.postnov.receivedBookService.Service.ConsumerSevice.Impl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.postnov.receivedBookService.Dto.ReceivedBookDto;
 import com.postnov.receivedBookService.Service.ConsumerSevice.ConsumeService;
+import com.postnov.receivedBookService.Service.EntityService.ReceivedBookMessageService;
 import com.postnov.receivedBookService.Service.EntityService.ReceivedBookService;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.DeliverCallback;
@@ -27,14 +28,18 @@ public class ConsumeServiceImpl implements ConsumeService {
 
     private final ReceivedBookService receivedBookService;
 
+    private final ReceivedBookMessageService receivedBookMessageService;
+
     @Value("${inputQueueName}")
     private String queueName;
 
     public ConsumeServiceImpl(
             Channel channel,
-            ReceivedBookService receivedBookService) {
+            ReceivedBookService receivedBookService,
+            ReceivedBookMessageService receivedBookMessageService) {
         this.channel = channel;
         this.receivedBookService = receivedBookService;
+        this.receivedBookMessageService = receivedBookMessageService;
     }
 
     @Scheduled(fixedRate = 1000)
@@ -73,7 +78,7 @@ public class ConsumeServiceImpl implements ConsumeService {
                     throw new RuntimeException("Incorrect first param");
             }
         } catch (Exception e) {
-            receivedBookService.saveReceivedBookMessage(message);
+            receivedBookMessageService.saveReceivedBookMessage(message);
             e.printStackTrace();
         }
     }
