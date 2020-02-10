@@ -1,12 +1,12 @@
 package com.postnov.libraryOrchestrator.Service.EntityService.Impl;
 
+import com.postnov.libraryOrchestrator.Client.LibraryCardServiceClient;
 import com.postnov.libraryOrchestrator.Entity.AddLibraryCardJson;
-import com.postnov.libraryOrchestrator.Entity.JsonMessage;
+import com.postnov.libraryOrchestrator.Entity.Message;
 import com.postnov.libraryOrchestrator.Repository.LibraryCardRepository;
 import com.postnov.libraryOrchestrator.Service.EntityService.LibraryCardService;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
 import javax.transaction.Transactional;
 import java.util.List;
@@ -17,19 +17,13 @@ public class LibraryCardServiceImpl implements LibraryCardService {
 
     private final LibraryCardRepository libraryCardRepository;
 
-    private final RestTemplate restTemplate;
-
-    @Value("${urlLibraryCardFilterByNumberAndSeries}")
-    private String urlLibraryCardFilterByNumberAndSeries;
-
-    @Value("${urlLibraryCardFilterByFromLibraryCardsIdAndToLibraryCardsId}")
-    private String urlLibraryCardFilterByFromLibraryCardsIdAndToLibraryCardsId;
+    private final LibraryCardServiceClient libraryCardServiceClient;
 
     public LibraryCardServiceImpl(
             LibraryCardRepository libraryCardRepository,
-            RestTemplate restTemplate) {
+            LibraryCardServiceClient libraryCardServiceClient) {
         this.libraryCardRepository = libraryCardRepository;
-        this.restTemplate = restTemplate;
+        this.libraryCardServiceClient = libraryCardServiceClient;
     }
 
     @Transactional
@@ -40,27 +34,24 @@ public class LibraryCardServiceImpl implements LibraryCardService {
 
     @Transactional
     @Override
-    public void deleteJson(JsonMessage addLibraryCardJson) {
+    public void deleteJson(Message addLibraryCardJson) {
         libraryCardRepository.delete((AddLibraryCardJson) addLibraryCardJson);
     }
 
     @Transactional
     @Override
-    public List<JsonMessage> getJson() {
+    public List<Message> getJson() {
         List<AddLibraryCardJson> addLibraryCardsJson = libraryCardRepository.findAll();
-        return addLibraryCardsJson.stream().map(x -> (JsonMessage) x).collect(Collectors.toList());
+        return addLibraryCardsJson.stream().map(x -> (Message) x).collect(Collectors.toList());
     }
 
     @Override
-    public String getLibraryCardDtoByPassportNumberAndSeries(String number, String series) {
-        String uri = String.format(urlLibraryCardFilterByNumberAndSeries, number, series);
-        return restTemplate.getForObject(uri, String.class);
+    public ResponseEntity<String> getLibraryCardDtoByPassportNumberAndSeries(String number, String series) {
+        return libraryCardServiceClient.getLibraryCardDtoByPassportNumberAndSeries(number, series);
     }
 
     @Override
-    public String getLibraryCards(Long fromLibraryCardsId, Long toLibraryCardId) {
-        String uri = String.format(urlLibraryCardFilterByFromLibraryCardsIdAndToLibraryCardsId,
-                fromLibraryCardsId, toLibraryCardId);
-        return restTemplate.getForObject(uri, String.class);
+    public ResponseEntity<String> getLibraryCards(Long fromLibraryCardsId, Long toLibraryCardId) {
+        return libraryCardServiceClient.getLibraryCards(fromLibraryCardsId, toLibraryCardId);
     }
 }

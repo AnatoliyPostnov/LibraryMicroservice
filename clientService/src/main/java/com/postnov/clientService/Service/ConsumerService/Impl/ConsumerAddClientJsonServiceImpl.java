@@ -50,7 +50,8 @@ public class ConsumerAddClientJsonServiceImpl implements ConsumerAddClientJsonSe
             logger.info(" [x] Request successful");
         };
 
-        channel.basicConsume(queueName, true, deliverCallback, consumerTag -> {});
+        channel.basicConsume(queueName, true, deliverCallback, consumerTag -> {
+        });
     }
 
     private <T> T mapFromJson(String json, Class<T> clazz)

@@ -42,6 +42,6 @@ public class BookAuthorServiceImpl implements BookAuthorService {
     @Transactional
     @Override
     public void deleteBook_AuthorByAuthorId(Long author_id) {
-        bookAuthorRepository.deleteBook_AuthorByAuthor_id(author_id);
+        bookAuthorRepository.deleteBookAuthorByAuthorId(author_id);
     }
 }

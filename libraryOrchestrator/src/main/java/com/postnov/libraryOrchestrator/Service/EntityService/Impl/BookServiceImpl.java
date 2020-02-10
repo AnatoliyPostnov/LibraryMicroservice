@@ -1,15 +1,13 @@
 package com.postnov.libraryOrchestrator.Service.EntityService.Impl;
 
+import com.postnov.libraryOrchestrator.Client.BookServiceClient;
 import com.postnov.libraryOrchestrator.Entity.AddBookJson;
-import com.postnov.libraryOrchestrator.Entity.JsonMessage;
+import com.postnov.libraryOrchestrator.Entity.Message;
 import com.postnov.libraryOrchestrator.Repository.BookRepository;
 import com.postnov.libraryOrchestrator.Service.EntityService.BookService;
-
-
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -19,22 +17,13 @@ public class BookServiceImpl implements BookService {
 
     private final BookRepository bookRepository;
 
-    private final RestTemplate restTemplate;
-
-    @Value("${urlBookFilterByBookNameAndBookVolume}")
-    private String urlBookFilterByBookNameAndBookVolume;
-
-    @Value("${urlBooksFilterByFromBookIdAndToBookId}")
-    private String urlBooksFilterByFromBookIdAndToBookId;
-
-    @Value("${urlBooksFilterByAuthorNameAndSurname}")
-    private String urlBooksFilterByAuthorNameAndSurname;
+    private final BookServiceClient bookServiceClient;
 
     public BookServiceImpl(
             BookRepository bookRepository,
-            RestTemplate restTemplate) {
+            BookServiceClient bookServiceClient) {
         this.bookRepository = bookRepository;
-        this.restTemplate = restTemplate;
+        this.bookServiceClient = bookServiceClient;
     }
 
     @Transactional
@@ -45,32 +34,29 @@ public class BookServiceImpl implements BookService {
 
     @Transactional
     @Override
-    public List<JsonMessage> getJson() {
+    public List<Message> getJson() {
         List<AddBookJson> addBooksJson = bookRepository.findAll();
-        return addBooksJson.stream().map(x -> (JsonMessage) x).collect(Collectors.toList());
+        return addBooksJson.stream().map(x -> (Message) x).collect(Collectors.toList());
     }
 
     @Transactional
     @Override
-    public void deleteJson(JsonMessage addBookJson) {
+    public void deleteJson(Message addBookJson) {
         bookRepository.delete((AddBookJson) addBookJson);
     }
 
     @Override
-    public String getBookDtoByBookNameAndBookVolume(String bookName, Integer bookVolume) {
-        String uri = String.format(urlBookFilterByBookNameAndBookVolume, bookName, bookVolume);
-        return restTemplate.getForObject(uri, String.class);
+    public ResponseEntity<String> getBookDtoByBookNameAndBookVolume(String bookName, Integer bookVolume) {
+        return bookServiceClient.getBookDtoByBookNameAndBookVolume(bookName, bookVolume);
     }
 
     @Override
-    public String getBooksDto(Long fromBookId, Long toBookId) {
-        String uri = String.format(urlBooksFilterByFromBookIdAndToBookId, fromBookId, toBookId);
-        return restTemplate.getForObject(uri, String.class);
+    public ResponseEntity<String> getBooksDto(Long fromBookId, Long toBookId) {
+        return bookServiceClient.getBooksDto(fromBookId, toBookId);
     }
 
     @Override
-    public String getBooksDtoByAuthorNameAndSurname(String authorName, String authorSurname) {
-        String uri = String.format(urlBooksFilterByAuthorNameAndSurname, authorName, authorSurname);
-        return restTemplate.getForObject(uri, String.class);
+    public ResponseEntity<String> getBooksDtoByAuthorNameAndSurname(String authorName, String authorSurname) {
+        return bookServiceClient.getBooksDtoByAuthorNameAndSurname(authorName, authorSurname);
     }
 }

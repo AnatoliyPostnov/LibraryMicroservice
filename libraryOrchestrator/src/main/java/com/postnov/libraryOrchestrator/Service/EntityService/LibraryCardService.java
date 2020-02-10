@@ -1,9 +1,11 @@
 package com.postnov.libraryOrchestrator.Service.EntityService;
 
+import org.springframework.http.ResponseEntity;
+
 public interface LibraryCardService extends EntityService {
 
-    String getLibraryCardDtoByPassportNumberAndSeries(String number, String series);
+    ResponseEntity<String> getLibraryCardDtoByPassportNumberAndSeries(String number, String series);
 
-    String getLibraryCards(Long fromLibraryCardsId, Long toLibraryCardId);
+    ResponseEntity<String> getLibraryCards(Long fromLibraryCardsId, Long toLibraryCardId);
 
 }

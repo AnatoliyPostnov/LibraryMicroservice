@@ -6,13 +6,12 @@ import java.util.Objects;
 @Entity
 public class ReceivedBookMessage {
 
-    @javax.persistence.Id
-    @GeneratedValue
-    Long Id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long Id;
 
     @Column
-    @Lob
-    String message;
+    private String message;
 
     public ReceivedBookMessage() {
     }

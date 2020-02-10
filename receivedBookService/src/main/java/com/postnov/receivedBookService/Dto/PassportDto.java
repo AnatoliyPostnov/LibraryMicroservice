@@ -8,10 +8,11 @@ import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Objects;
 
-public class PassportDto {
+public class PassportDto implements Serializable {
 
     @NotNull
     @NotBlank

@@ -4,11 +4,8 @@ import com.postnov.clientService.Dto.LibraryCardDto;
 import com.postnov.clientService.Entity.LibraryCard;
 import com.postnov.clientService.Exception.notFoundException.FindPassportByPassportNumberAndSeriesWasNotFoundException;
 
-
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
 
 public interface LibraryCardService {
 

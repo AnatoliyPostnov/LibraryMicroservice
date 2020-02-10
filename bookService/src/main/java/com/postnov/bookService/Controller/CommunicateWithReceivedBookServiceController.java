@@ -1,7 +1,7 @@
 package com.postnov.bookService.Controller;
 
 import com.postnov.bookService.Dto.BookDto;
-import com.postnov.bookService.Entity.ListReceivedBookIdDto;
+import com.postnov.bookService.Dto.ListReceivedBookIdDto;
 import com.postnov.bookService.Service.EntityService.BookService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -19,8 +19,15 @@ public class CommunicateWithReceivedBookServiceController {
     @ResponseStatus(HttpStatus.OK)
     @GetMapping(value = "/CommunicateWithReceivedBook/filter")
     public BookDto getReceivedBookDtoById(
-            @RequestParam("Id") Long Id) {
+            @RequestParam("ReceivedBookId") Long Id) {
         return bookService.getReceivedBookDtoById(Id);
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping(value = "/CommunicateWithReceivedBook/BookDtoExistingOfTheLibrary/filter")
+    public BookDto getBookDtoExistingOfTheLibraryById(
+            @RequestParam("BookId") Long Id) {
+        return bookService.getBookDtoExistingOfTheLibraryById(Id);
     }
 
     @ResponseStatus(HttpStatus.OK)
@@ -40,19 +47,19 @@ public class CommunicateWithReceivedBookServiceController {
 
     @ResponseStatus(HttpStatus.OK)
     @PostMapping("/CommunicateWithReceivedBook/received/book")
-    public void postReceivedBook(@RequestBody BookDto bookDto){
+    public void postReceivedBook(@RequestBody BookDto bookDto) {
         bookService.receivedBook(bookDto);
     }
 
     @ResponseStatus(HttpStatus.OK)
     @PostMapping("/CommunicateWithReceivedBook/return/book")
-    public void postReturnBook(@RequestBody Long bookId){
+    public void postReturnBook(@RequestBody Long bookId) {
         bookService.returnBook(bookId);
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @DeleteMapping("/CommunicateWithReceivedBook/filter")
-    public void deleteBookBuBookId(@RequestParam("bookId") Long bookId){
+    @DeleteMapping("/CommunicateWithReceivedBook/delete/filter")
+    public void deleteBookByBookId(@RequestParam("bookId") Long bookId) {
         bookService.deleteBookByBookId(bookId);
     }
 

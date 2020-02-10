@@ -1,6 +1,6 @@
 package com.postnov.libraryOrchestrator.Service.EntityService;
 
-import com.postnov.libraryOrchestrator.Entity.JsonMessage;
+import com.postnov.libraryOrchestrator.Entity.Message;
 
 import java.util.List;
 
@@ -8,8 +8,8 @@ public interface EntityService {
 
     void saveJsonInDB(String Json);
 
-    List<JsonMessage> getJson();
+    List<Message> getJson();
 
-    void deleteJson(JsonMessage json);
+    void deleteJson(Message json);
 
 }

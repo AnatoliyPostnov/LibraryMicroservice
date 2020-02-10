@@ -3,9 +3,8 @@ package com.postnov.libraryOrchestrator.Controller;
 import com.postnov.libraryOrchestrator.Service.EntityService.LibraryCardService;
 import com.postnov.libraryOrchestrator.Service.ProduserService.LibraryCardProducerService;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Set;
 
 @RestController
 @RequestMapping
@@ -24,22 +23,21 @@ public class LibraryCardController {
 
     @ResponseStatus(HttpStatus.OK)
     @PostMapping("/add/libraryCards")
-    public void addLibraryCards(
-            @RequestBody String addLibraryCardJson) {
+    public void addLibraryCards(@RequestBody String addLibraryCardJson) {
         libraryCardProducerService.send(addLibraryCardJson);
     }
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/libraryCard/filter")
-    public String getLibraryCardByPassportNumberAndSeries(
+    public ResponseEntity<String> getLibraryCardByPassportNumberAndSeries(
             @RequestParam("passportNumber") String passportNumber,
-            @RequestParam("passportSeries") String passportSeries){
+            @RequestParam("passportSeries") String passportSeries) {
         return libraryCardService.getLibraryCardDtoByPassportNumberAndSeries(passportNumber, passportSeries);
     }
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/libraryCards/filter")
-    public String getLibraryCardsByFromLibraryCardsIdToLibraryCardsId(
+    public ResponseEntity<String> getLibraryCardsByFromLibraryCardsIdToLibraryCardsId(
             @RequestParam("fromLibraryCardsId") Long fromLibraryCardsId,
             @RequestParam("toLibraryCardsId") Long toLibraryCardId) {
         System.out.println(fromLibraryCardsId);

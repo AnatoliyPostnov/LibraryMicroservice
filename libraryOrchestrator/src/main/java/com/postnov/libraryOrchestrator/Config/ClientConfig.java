@@ -1,14 +1,15 @@
 package com.postnov.libraryOrchestrator.Config;
 
+import feign.okhttp.OkHttpClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.client.RestTemplate;
 
 @Configuration
-public class RestTemplateConfig {
+public class ClientConfig {
 
     @Bean
-    public RestTemplate restTemplate() {
-        return new RestTemplate();
+    public OkHttpClient client() {
+        return new OkHttpClient();
     }
+
 }

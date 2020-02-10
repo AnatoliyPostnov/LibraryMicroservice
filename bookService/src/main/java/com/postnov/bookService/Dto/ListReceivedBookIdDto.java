@@ -1,4 +1,4 @@
-package com.postnov.bookService.Entity;
+package com.postnov.bookService.Dto;
 
 import java.util.List;
 

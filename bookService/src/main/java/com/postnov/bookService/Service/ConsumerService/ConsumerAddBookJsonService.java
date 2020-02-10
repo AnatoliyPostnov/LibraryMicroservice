@@ -5,5 +5,5 @@ import java.util.concurrent.TimeoutException;
 
 public interface ConsumerAddBookJsonService {
 
-    public void getJsonMessage() throws IOException, TimeoutException;
+    void getJsonMessage() throws IOException, TimeoutException;
 }

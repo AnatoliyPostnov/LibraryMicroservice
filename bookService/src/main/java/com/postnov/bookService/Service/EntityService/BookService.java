@@ -1,8 +1,8 @@
 package com.postnov.bookService.Service.EntityService;
 
 import com.postnov.bookService.Dto.BookDto;
+import com.postnov.bookService.Dto.ListReceivedBookIdDto;
 import com.postnov.bookService.Entity.Book;
-import com.postnov.bookService.Entity.ListReceivedBookIdDto;
 import com.postnov.bookService.Exception.notFoundException.FindBookByIdWasNotFoundException;
 
 import java.util.List;
@@ -28,6 +28,8 @@ public interface BookService {
     BookDto getBookDtoById(Long Id) throws FindBookByIdWasNotFoundException;
 
     BookDto makeBookDto(Book book);
+
+    BookDto getBookDtoExistingOfTheLibraryById(Long Id);
 
     Book getBookByBookNameAndVolume(String name, Integer volume);
 

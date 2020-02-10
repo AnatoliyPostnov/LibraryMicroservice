@@ -4,17 +4,17 @@ import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
-public class AddBookJson implements JsonMessage {
+public class AddBookJson implements Message {
 
     @Id
-    @GeneratedValue
-    Long Id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long Id;
 
     @Column
-    @Lob
-    String message;
+    private String message;
 
-    public AddBookJson(){}
+    public AddBookJson() {
+    }
 
     public AddBookJson(String message) {
         this.message = message;

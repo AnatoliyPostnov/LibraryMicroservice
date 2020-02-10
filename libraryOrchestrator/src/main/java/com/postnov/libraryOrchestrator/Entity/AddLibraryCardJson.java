@@ -4,17 +4,17 @@ import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
-public class AddLibraryCardJson implements JsonMessage {
+public class AddLibraryCardJson implements Message {
 
     @Id
-    @GeneratedValue
-    Long Id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long Id;
 
     @Column
-    @Lob
-    String message;
+    private String message;
 
-    public AddLibraryCardJson(){}
+    public AddLibraryCardJson() {
+    }
 
     public AddLibraryCardJson(String message) {
         this.message = message;
@@ -40,7 +40,7 @@ public class AddLibraryCardJson implements JsonMessage {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        AddBookJson that = (AddBookJson) o;
+        AddLibraryCardJson that = (AddLibraryCardJson) o;
         return Objects.equals(Id, that.Id) &&
                 Objects.equals(message, that.message);
     }

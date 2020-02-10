@@ -2,13 +2,10 @@ package com.postnov.bookService.Service.EntityService.Impl;
 
 import com.postnov.bookService.Dto.AuthorDto;
 import com.postnov.bookService.Dto.BookDto;
+import com.postnov.bookService.Dto.ListReceivedBookIdDto;
 import com.postnov.bookService.Entity.Author;
 import com.postnov.bookService.Entity.Book;
-import com.postnov.bookService.Entity.ListReceivedBookIdDto;
-import com.postnov.bookService.Exception.notFoundException.FindBookByIdWasNotFoundException;
-import com.postnov.bookService.Exception.notFoundException.FindReceivedBookByIdWasNotFoundException;
-import com.postnov.bookService.Exception.notFoundException.FindReceivedBookByNameAndVolumeWasNotFoundException;
-import com.postnov.bookService.Exception.notFoundException.FindReturnBookByNameAndVolumeWasNotFoundException;
+import com.postnov.bookService.Exception.notFoundException.*;
 import com.postnov.bookService.Repository.BookRepository;
 import com.postnov.bookService.Service.EntityService.AuthorService;
 import com.postnov.bookService.Service.EntityService.BookAuthorService;
@@ -126,6 +123,12 @@ public class BookServiceImpl implements BookService {
                         AuthorDto.class)
         );
         return bookDto;
+    }
+
+    @Override
+    public BookDto getBookDtoExistingOfTheLibraryById(Long Id) {
+        return makeBookDto(bookRepository.findById(Id).orElseThrow(
+                () -> new FindBookByIdExistingOfTheLibraryWasNotFoundException(Id)));
     }
 
     @Transactional

@@ -45,7 +45,6 @@ public class AuthorServiceImpl implements AuthorService {
         bookAuthorService.saveAuthorsIdAndBookId(authors_id, book_id);
     }
 
-
     @Override
     public void deleteAuthorByBook(Book book) {
         deleteAuthorByBookId(book.getId());
@@ -67,7 +66,7 @@ public class AuthorServiceImpl implements AuthorService {
 
     @Transactional
     @Override
-    public List<Author> getAuthorsByBookId(Long bookId){
+    public List<Author> getAuthorsByBookId(Long bookId) {
         List<Long> authorsId = bookAuthorService.getAuthorsIdByBookId(bookId);
         List<Author> authors = new ArrayList<>();
         for (Long authorId : authorsId) {

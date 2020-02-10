@@ -26,6 +26,8 @@ dependencies {
     runtime 'org.postgresql:postgresql:42.2.8'
     testCompile 'org.springframework.boot:spring-boot-starter-test:2.2.1.RELEASE'
     implementation 'org.springframework.boot:spring-boot-starter-amqp'
+    compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign', version: '2.2.1.RELEASE'
+    compile group: 'io.github.openfeign', name: 'feign-okhttp', version: '10.1.0'
 }
 
 tasks.withType(JavaCompile) {

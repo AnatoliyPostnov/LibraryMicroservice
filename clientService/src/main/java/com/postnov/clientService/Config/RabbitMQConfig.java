@@ -6,7 +6,6 @@ import com.rabbitmq.client.ConnectionFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Scope;
 
 import java.io.IOException;
 import java.util.concurrent.TimeoutException;
@@ -36,7 +35,7 @@ public class RabbitMQConfig {
     @Bean
     public Channel channel(Connection connection) throws IOException {
         Channel channel = connection.createChannel();
-        channel.queueDeclare(queueName,false,false,false,null);
+        channel.queueDeclare(queueName, false, false, false, null);
         return channel;
     }
 }

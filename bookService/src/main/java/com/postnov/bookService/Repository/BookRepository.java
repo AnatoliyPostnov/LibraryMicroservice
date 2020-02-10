@@ -58,6 +58,8 @@ public interface BookRepository extends JpaRepository<Book, Long> {
     Optional<Book> findBookById(
             @Param("Id") Long Id);
 
+    Optional<Book> findById(@Param("Id") Long Id);
+
     @Query(value = "select id from Book where name = :booksName and isReceivedBook = 'true'")
     List<Long> findReceivedBooksIdByBooksName(
             @Param("booksName") String booksName);

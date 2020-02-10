@@ -1,11 +1,13 @@
 package com.postnov.libraryOrchestrator.Service.EntityService;
 
+import org.springframework.http.ResponseEntity;
+
 public interface BookService extends EntityService {
 
-    String getBookDtoByBookNameAndBookVolume(String bookName, Integer bookVolume);
+    ResponseEntity<String> getBookDtoByBookNameAndBookVolume(String bookName, Integer bookVolume);
 
-    String getBooksDto(Long fromBookId, Long toBookId);
+    ResponseEntity<String> getBooksDto(Long fromBookId, Long toBookId);
 
-    String getBooksDtoByAuthorNameAndSurname(String authorName, String authorSurname);
+    ResponseEntity<String> getBooksDtoByAuthorNameAndSurname(String authorName, String authorSurname);
 
 }

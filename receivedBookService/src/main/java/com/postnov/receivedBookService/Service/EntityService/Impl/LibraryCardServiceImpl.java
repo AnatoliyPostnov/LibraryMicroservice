@@ -1,44 +1,31 @@
 package com.postnov.receivedBookService.Service.EntityService.Impl;
 
+import com.postnov.receivedBookService.Client.LibraryCardServiceClient;
 import com.postnov.receivedBookService.Dto.LibraryCardDto;
 import com.postnov.receivedBookService.Service.EntityService.LibraryCardService;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
 @Service
 public class LibraryCardServiceImpl implements LibraryCardService {
 
-    private final RestTemplate restTemplate;
+    private final LibraryCardServiceClient libraryCardServiceClient;
 
-    @Value("${urlGetLibraryCardDtoFilterId}")
-    private String urlGetLibraryCardDtoFilterId;
-
-    @Value("${urlGetLibraryCardIdFilterNumberAndSeries}")
-    private String urlGetLibraryCardIdFilterNumberAndSeries;
-
-    @Value("${urlDeleteLibraryCardFilterNumberAndSeries}")
-    private String urlDeleteLibraryCardFilterNumberAndSeries;
-
-    public LibraryCardServiceImpl(RestTemplate restTemplate) {
-        this.restTemplate = restTemplate;
+    public LibraryCardServiceImpl(LibraryCardServiceClient libraryCardServiceClient) {
+        this.libraryCardServiceClient = libraryCardServiceClient;
     }
 
     @Override
     public LibraryCardDto getLibraryCardDtoById(Long Id) {
-        String uri = String.format(urlGetLibraryCardDtoFilterId, Id);
-        return restTemplate.getForObject(uri, LibraryCardDto.class);
+        return libraryCardServiceClient.getLibraryCardDtoById(Id);
     }
 
     @Override
     public Long getLibraryCardIdByPassportNumberAndSeries(String number, String series) {
-        String uri = String.format(urlGetLibraryCardIdFilterNumberAndSeries, number, series);
-        return restTemplate.getForObject(uri, Long.class);
+        return libraryCardServiceClient.getLibraryCardIdByPassportNumberAndSeries(number, series);
     }
 
     @Override
     public void deleteLibraryCard(String number, String series) {
-        String uri = String.format(urlDeleteLibraryCardFilterNumberAndSeries, number, series);
-        restTemplate.delete(uri);
+        libraryCardServiceClient.deleteLibraryCard(number, series);
     }
 }

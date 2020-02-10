@@ -1,9 +1,10 @@
 package com.postnov.bookService.Entity;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
-public class BookAuthor {
+public class BookAuthor implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

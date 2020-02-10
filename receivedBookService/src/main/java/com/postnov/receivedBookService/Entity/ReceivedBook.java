@@ -2,7 +2,6 @@ package com.postnov.receivedBookService.Entity;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.Objects;
 
 @Entity
 public class ReceivedBook {
@@ -78,5 +77,4 @@ public class ReceivedBook {
         this.libraryCardId = libraryCardId;
         return this;
     }
-
 }

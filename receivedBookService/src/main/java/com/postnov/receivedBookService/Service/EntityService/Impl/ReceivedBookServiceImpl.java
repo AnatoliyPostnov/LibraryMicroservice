@@ -9,6 +9,7 @@ import com.postnov.receivedBookService.Service.EntityService.BookService;
 import com.postnov.receivedBookService.Service.EntityService.LibraryCardService;
 import com.postnov.receivedBookService.Service.EntityService.ReceivedBookService;
 import com.postnov.receivedBookService.Service.OtherService.ConvertService;
+import feign.FeignException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -22,6 +23,8 @@ import java.util.stream.Collectors;
 
 @Service
 public class ReceivedBookServiceImpl implements ReceivedBookService {
+
+    private final static int NOT_FOUNT_STATUS = 404;
 
     private final Logger logger = LoggerFactory.getLogger(ReceivedBookServiceImpl.class);
 
@@ -56,9 +59,15 @@ public class ReceivedBookServiceImpl implements ReceivedBookService {
 
     @Override
     public void deleteBookByBookNameAndVolume(String name, Integer volume) {
-        Long bookId = bookService.getBookIdByBookNameAndBookVolume(name, volume);
-        receivedBookRepository.deleteByBookId(bookId);
-        bookService.deleteBookByBookId(bookId);
+        try {
+            Long bookId = bookService.getBookIdByBookNameAndBookVolume(name, volume);
+            receivedBookRepository.deleteByBookId(bookId);
+            bookService.deleteBookByBookId(bookId);
+        } catch (FeignException e) {
+            if (e.status() != NOT_FOUNT_STATUS) {
+                throw e;
+            }
+        }
     }
 
     @Override
@@ -78,11 +87,11 @@ public class ReceivedBookServiceImpl implements ReceivedBookService {
             Long fromReceivedBookId, Long toReceivedBookId, Boolean forSendEmailClient) {
         List<ReceivedBook> receivedBooks;
         if (forSendEmailClient) {
-            receivedBooks = receivedBookRepository.findAllReceivedBookForScheduled();
+            receivedBooks = receivedBookRepository.findAllReceivedBookForSendEmailClient();
         } else {
             receivedBooks = receivedBookRepository.findAllReceivedBook(fromReceivedBookId, toReceivedBookId);
         }
-        return convertReceivedBooksToReceivedBooksDto(receivedBooks);
+        return convertReceivedBooksToReceivedBooksDto(receivedBooks, false);
     }
 
     @Transactional
@@ -92,41 +101,59 @@ public class ReceivedBookServiceImpl implements ReceivedBookService {
         List<ReceivedBook> receivedBooks;
         if (historyOrNot) {
             receivedBooks = receivedBookRepository.findHistoryReceivedBookByLibraryCardId(libraryCardId);
+            return convertReceivedBooksToReceivedBooksDto(receivedBooks, true);
         } else {
             receivedBooks = receivedBookRepository.findReceivedBookByLibraryCardId(libraryCardId);
+            return convertReceivedBooksToReceivedBooksDto(receivedBooks, false);
         }
-        return convertReceivedBooksToReceivedBooksDto(receivedBooks);
     }
 
     @Override
-    public List<ReceivedBookDto> convertReceivedBooksToReceivedBooksDto(List<ReceivedBook> receivedBooks) {
-        return receivedBooks.stream()
-                .map(receivedBook -> {
-                    ReceivedBookDto receivedBookDto = convertServiceReceivedBook.convertToDto(receivedBook, ReceivedBookDto.class);
-                    receivedBookDto.setBook(bookService.getReceivedBookDtoById(receivedBook.getBookId()));
-                    receivedBookDto.setLibraryCard(libraryCardService.getLibraryCardDtoById(receivedBook.getLibraryCardId()));
-                    return receivedBookDto;
-                })
-                .collect(Collectors.toList());
+    public List<ReceivedBookDto> convertReceivedBooksToReceivedBooksDto(List<ReceivedBook> receivedBooks, Boolean historyOrNot) {
+        if (historyOrNot) {
+            return receivedBooks.stream()
+                    .map(receivedBook -> {
+                        ReceivedBookDto receivedBookDto = convertServiceReceivedBook.convertToDto(receivedBook, ReceivedBookDto.class);
+                        receivedBookDto.setBook(bookService.getBookDtoById(receivedBook.getBookId()));
+                        receivedBookDto.setLibraryCard(libraryCardService.getLibraryCardDtoById(receivedBook.getLibraryCardId()));
+                        return receivedBookDto;
+                    })
+                    .collect(Collectors.toList());
+        } else {
+            return receivedBooks.stream()
+                    .map(receivedBook -> {
+                        ReceivedBookDto receivedBookDto = convertServiceReceivedBook.convertToDto(receivedBook, ReceivedBookDto.class);
+                        receivedBookDto.setBook(bookService.getReceivedBookDtoById(receivedBook.getBookId()));
+                        receivedBookDto.setLibraryCard(libraryCardService.getLibraryCardDtoById(receivedBook.getLibraryCardId()));
+                        return receivedBookDto;
+                    })
+                    .collect(Collectors.toList());
+        }
     }
 
     @Transactional
     @Override
     public void receivedBook(ReceivedBookDto receivedBookDto) {
-        LibraryCardDto libraryCardDto = receivedBookDto.getLibraryCard();
-        BookDto bookDto = receivedBookDto.getBook();
-        Long libraryCardId = libraryCardService.getLibraryCardIdByPassportNumberAndSeries(
-                libraryCardDto.getClient().getPassport().getNumber(),
-                libraryCardDto.getClient().getPassport().getSeries());
-        Long bookId = bookService.getBookIdByBookNameAndBookVolume(
-                bookDto.getName(), bookDto.getVolume());
-        bookService.receivedBook(bookDto);
-        ReceivedBook receivedBook = convertServiceReceivedBook
-                .convertFromDto(receivedBookDto, ReceivedBook.class)
-                .setBookId(bookId)
-                .setLibraryCardId(libraryCardId)
-                .setDateOfBookReceiving(LocalDate.now());
-        receivedBookRepository.save(receivedBook);
+        try {
+            LibraryCardDto libraryCardDto = receivedBookDto.getLibraryCard();
+            BookDto bookDto = receivedBookDto.getBook();
+            Long libraryCardId = libraryCardService.getLibraryCardIdByPassportNumberAndSeries(
+                    libraryCardDto.getClient().getPassport().getNumber(),
+                    libraryCardDto.getClient().getPassport().getSeries());
+            Long bookId = bookService.getBookIdByBookNameAndBookVolume(
+                    bookDto.getName(), bookDto.getVolume());
+            bookService.receivedBook(bookDto);
+            ReceivedBook receivedBook = convertServiceReceivedBook
+                    .convertFromDto(receivedBookDto, ReceivedBook.class)
+                    .setBookId(bookId)
+                    .setLibraryCardId(libraryCardId)
+                    .setDateOfBookReceiving(LocalDate.now());
+            receivedBookRepository.save(receivedBook);
+        } catch (FeignException e) {
+            if (e.status() != NOT_FOUNT_STATUS) {
+                throw e;
+            }
+        }
     }
 
     @Transactional

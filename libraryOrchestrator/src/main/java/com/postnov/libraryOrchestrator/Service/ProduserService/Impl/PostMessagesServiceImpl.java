@@ -1,6 +1,6 @@
 package com.postnov.libraryOrchestrator.Service.ProduserService.Impl;
 
-import com.postnov.libraryOrchestrator.Entity.JsonMessage;
+import com.postnov.libraryOrchestrator.Entity.Message;
 import com.postnov.libraryOrchestrator.Service.EntityService.BookService;
 import com.postnov.libraryOrchestrator.Service.EntityService.EntityService;
 import com.postnov.libraryOrchestrator.Service.EntityService.LibraryCardService;
@@ -52,8 +52,8 @@ public class PostMessagesServiceImpl implements PostMessagesService {
     }
 
     private void post(EntityService entityService, EntityProducerSender producerSender) {
-        List<JsonMessage> entities = entityService.getJson();
-        for (JsonMessage entity : entities) {
+        List<Message> entities = entityService.getJson();
+        for (Message entity : entities) {
             entityService.deleteJson(entity);
             producerSender.send(entity.getMessage());
         }

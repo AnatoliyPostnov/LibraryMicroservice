@@ -51,7 +51,7 @@ public class ConsumeServiceImpl implements ConsumeService {
         try {
             channel.basicConsume(queueName, true, deliverCallback, consumerTag -> {
             });
-        }catch (IOException e){
+        } catch (IOException e) {
             logger.error(" [*] You catch IOException in Scheduled getMessage");
             e.printStackTrace();
         }

@@ -1,11 +1,13 @@
 package com.postnov.libraryOrchestrator.Service.EntityService;
 
-public interface ReceivedBookService extends EntityService{
+import org.springframework.http.ResponseEntity;
 
-    String getReceivedBooksByPassportNumberAndSeries(String passportNumber, String passportSeries);
+public interface ReceivedBookService extends EntityService {
 
-    String getHistoryReceivedBooksByPassportNumberAndSeries(String passportNumber, String passportSeries);
+    ResponseEntity<String> getReceivedBooksByPassportNumberAndSeries(String passportNumber, String passportSeries);
 
-    String getAllReceivedBook(Long fromReceivedBookId, Long toReceivedBookId);
+    ResponseEntity<String> getHistoryReceivedBooksByPassportNumberAndSeries(String passportNumber, String passportSeries);
+
+    ResponseEntity<String> getAllReceivedBook(Long fromReceivedBookId, Long toReceivedBookId);
 
 }
