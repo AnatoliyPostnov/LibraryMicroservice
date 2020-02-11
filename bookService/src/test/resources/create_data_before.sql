@@ -19,7 +19,9 @@ INSERT INTO book_service_test.public.book(id, name, volume, date_of_publishing, 
 VALUES (4, 'Spring 5 for professionals', '1120', '2019-11-05', false);
 
 INSERT INTO book_service_test.public.book_author(id, book_id, author_id)
-VALUES (5, 4, 1), (6, 4, 2), (7, 4, 3);
+VALUES (5, 4, 1),
+       (6, 4, 2),
+       (7, 4, 3);
 
 
 INSERT INTO book_service_test.public.author(id, name, surname, birthday)
@@ -32,7 +34,8 @@ INSERT INTO book_service_test.public.book(id, name, volume, date_of_publishing, 
 VALUES (10, '55 oral topics in English', '155', '2003-11-05', false);
 
 INSERT INTO book_service_test.public.book_author(id, book_id, author_id)
-VALUES (11, 10, 8), (12, 10, 9);
+VALUES (11, 10, 8),
+       (12, 10, 9);
 
 
 INSERT INTO book_service_test.public.author(id, name, surname, birthday)

@@ -25,15 +25,14 @@ import java.util.List;
 
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.junit.Assert.assertEquals;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = BookServiceApplication.class)
 @AutoConfigureMockMvc
 @Sql(value = {"/create_data_before.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-//@Sql(value = {"/create_data_after.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+@Sql(value = {"/create_data_after.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
 public class CommunicateWithReceivedBookServiceControllerTest {
 
     private static final Long RECEIVED_BOOK_ID = 4L;
@@ -111,9 +110,39 @@ public class CommunicateWithReceivedBookServiceControllerTest {
         mockMvc.perform(post("/CommunicateWithReceivedBook/received/book")
                 .contentType(MediaType.APPLICATION_JSON_VALUE).content(convertFromBookDtoToJson(createBookWithTreeAuthors())));
 
-        mockMvc.perform(get(String.format("CommunicateWithReceivedBook/receivedBookId/filter?bookName=%s", "Spring 5 for professionals")))
+        mockMvc.perform(get(String.format("/CommunicateWithReceivedBook/receivedBookId/filter?bookName=%s", "Spring 5 for professionals")))
                 .andDo(print())
                 .andExpect(MockMvcResultMatchers.status().isOk());
+    }
+
+    @Test
+    public void returnBookTest() throws Exception {
+
+        mockMvc.perform(post("/CommunicateWithReceivedBook/received/book")
+                .contentType(MediaType.APPLICATION_JSON_VALUE).content(convertFromBookDtoToJson(createBookWithTreeAuthors())));
+
+        mockMvc.perform(post("/CommunicateWithReceivedBook/return/book")
+                .contentType(MediaType.APPLICATION_JSON_VALUE).content(RECEIVED_BOOK_ID.toString()));
+
+        mockMvc.perform(get(String.format("/CommunicateWithReceivedBook/filter?ReceivedBookId=%s", RECEIVED_BOOK_ID)))
+                .andDo(print())
+                .andExpect(MockMvcResultMatchers.status().isNotFound());
+    }
+
+    @Test
+    public void deleteBookByBookIdTest() throws Exception {
+        mockMvc.perform(delete(String.format("/CommunicateWithReceivedBook/delete/filter?bookId=%s", RECEIVED_BOOK_ID)))
+                .andDo(print())
+                .andExpect(MockMvcResultMatchers.status().isOk());
+        ;
+        assertEquals(3,
+                convertFromJsonToListBookDto(
+                        mockMvc.perform(get(String.format("/books/filter?fromBookId=%s&toBookId=%s", 1, 20)))
+                                .andDo(print())
+                                .andExpect(MockMvcResultMatchers.status().isOk())
+                                .andReturn())
+                        .getBooksDto().size()
+        );
     }
 
     public static BookDto createBookWithTreeAuthors() {
@@ -157,6 +186,5 @@ public class CommunicateWithReceivedBookServiceControllerTest {
         objectMapper.writeValue(writer, bookDto);
         return writer.toString();
     }
-
 
 }
