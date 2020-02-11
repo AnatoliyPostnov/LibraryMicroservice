@@ -25,6 +25,7 @@ dependencies {
     compile 'org.junit.jupiter:junit-jupiter-engine:5.5.2'
     runtime 'org.postgresql:postgresql:42.2.8'
     testCompile 'org.springframework.boot:spring-boot-starter-test:2.2.1.RELEASE'
+
     implementation 'org.springframework.boot:spring-boot-starter-amqp'
 }
 
