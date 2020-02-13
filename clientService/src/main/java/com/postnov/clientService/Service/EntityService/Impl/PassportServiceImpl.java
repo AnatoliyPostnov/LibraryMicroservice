@@ -24,6 +24,7 @@ public class PassportServiceImpl implements PassportService {
         this.convertServicePassport = convertServicePassport;
     }
 
+    @Transactional
     @Override
     public void deletePassportByPassportId(Long Id) {
         passportRepository.deleteById(Id);

@@ -62,7 +62,7 @@ public class RabbitMQTest {
                 "\t\t            \"name\": \"Roman\",\n" +
                 "\t\t            \"surname\": \"Big\",\n" +
                 "\t\t            \"birthday\": \"1964-06-15\",\n" +
-                "\t\t            \"number\": \"4567\",\n" +
+                "\t\t            \"number\": \"4535\",\n" +
                 "\t\t            \"series\": \"1553445\",\n" +
                 "\t\t            \"authorityIssuer\": \"Piter\",\n" +
                 "\t\t            \"dateSigning\": \"1990-05-05\"\n" +
@@ -76,12 +76,12 @@ public class RabbitMQTest {
     public void rabbitTest() throws Exception {
         send(createJson());
         Thread.sleep(100);
-        mockMvc.perform(get(String.format("/libraryCard/filter?passportNumber=%s&passportSeries=%s", 4567, 1553445)))
+        mockMvc.perform(get(String.format("/libraryCard/filter?passportNumber=%s&passportSeries=%s", 4535, 1553445)))
                 .andDo(print())
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect((MockMvcResultMatchers.content().string(containsString("Roman"))))
                 .andExpect((MockMvcResultMatchers.content().string(containsString("Big"))))
-                .andExpect((MockMvcResultMatchers.content().string(containsString("4567"))))
+                .andExpect((MockMvcResultMatchers.content().string(containsString("4535"))))
                 .andExpect((MockMvcResultMatchers.content().string(containsString("1553445"))))
                 .andExpect((MockMvcResultMatchers.content().string(containsString("Piter"))))
                 .andExpect((MockMvcResultMatchers.content().string(containsString("1964-06-15"))))

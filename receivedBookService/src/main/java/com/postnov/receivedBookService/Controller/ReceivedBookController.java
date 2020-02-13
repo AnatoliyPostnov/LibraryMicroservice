@@ -45,4 +45,11 @@ public class ReceivedBookController {
         return receivedBookService
                 .getAllReceivedBook(fromReceivedBookId, toReceivedBookId, false);
     }
+
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/all/received/books/for/email/sender")
+    public List<ReceivedBookDto> getAllReceivedBooksForEmailSender() throws Exception {
+        return receivedBookService
+                .getAllReceivedBook(null, null, true);
+    }
 }

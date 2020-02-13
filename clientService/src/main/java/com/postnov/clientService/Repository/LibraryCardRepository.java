@@ -16,5 +16,4 @@ public interface LibraryCardRepository extends JpaRepository<LibraryCard, Long> 
 
     void deleteByClientId(
             @Param("Id") Long Id);
-
 }

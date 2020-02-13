@@ -1,0 +1,2 @@
+DELETE FROM received_book_test.public.received_book;
+DELETE FROM received_book_test.public.received_book_message;

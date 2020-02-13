@@ -13,7 +13,7 @@ public interface ReceivedBookService {
 
     List<ReceivedBookDto> convertReceivedBooksToReceivedBooksDto(List<ReceivedBook> receivedBooks, Boolean historyOrNot);
 
-    List<ReceivedBookDto> getAllReceivedBook(Long fromReceivedBookId, Long toReceivedBookId, Boolean historyOrNot);
+    List<ReceivedBookDto> getAllReceivedBook(Long fromReceivedBookId, Long toReceivedBookId, Boolean forSendEmailClient);
 
     List<ReceivedBookDto> getReceivedBooks(String number, String series, Boolean historyOrNot);
 
