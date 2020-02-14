@@ -3,13 +3,13 @@ package com.postnov.clientService.Controller;
 import com.postnov.clientService.Dto.LibraryCardDto;
 import com.postnov.clientService.Exception.notFoundException.FindPassportByPassportNumberAndSeriesWasNotFoundException;
 import com.postnov.clientService.Service.EntityService.LibraryCardService;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
 @RestController
-@RequestMapping
 public class LibraryCardController {
 
     private final LibraryCardService libraryCardService;
@@ -18,7 +18,6 @@ public class LibraryCardController {
         this.libraryCardService = libraryCardService;
     }
 
-    @ResponseStatus(HttpStatus.OK)
     @GetMapping("/libraryCard/filter")
     public LibraryCardDto getLibraryCardByPassportNumberAndSeries(
             @RequestParam("passportNumber") String passportNumber,
@@ -27,7 +26,6 @@ public class LibraryCardController {
         return libraryCardService.getLibraryCardDtoByPassportNumberAndSeries(passportNumber, passportSeries);
     }
 
-    @ResponseStatus(HttpStatus.OK)
     @GetMapping("/libraryCards/filter")
     public List<LibraryCardDto> getLibraryCardsByFromLibraryCardsIdToLibraryCardsId(
             @RequestParam("fromLibraryCardsId") Long fromLibraryCardsId,

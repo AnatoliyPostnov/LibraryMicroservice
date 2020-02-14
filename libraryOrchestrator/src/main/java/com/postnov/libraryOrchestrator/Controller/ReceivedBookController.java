@@ -7,7 +7,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping
 public class ReceivedBookController {
 
     private final ReceivedBookService receivedBookService;
@@ -21,14 +20,12 @@ public class ReceivedBookController {
         this.receivedBookProducerService = receivedBookProducerService;
     }
 
-    @ResponseStatus(HttpStatus.OK)
     @PostMapping("/received/book")
     public void receivedBook(
             @RequestBody String receivedBookJson) {
         receivedBookProducerService.sendReceivedBook(receivedBookJson);
     }
 
-    @ResponseStatus(HttpStatus.OK)
     @PostMapping("/return/book/filter")
     public void returnBooksByBookName(
             @RequestParam("passportNumber") String passportNumber,
@@ -37,7 +34,6 @@ public class ReceivedBookController {
         receivedBookProducerService.sendReturnBooks(passportNumber, passportSeries, booksName);
     }
 
-    @ResponseStatus(HttpStatus.OK)
     @GetMapping("/received/books/filter")
     public ResponseEntity<String> getReceivedBooksByPassportSNumberAndSeries(
             @RequestParam("passportNumber") String passportNumber,
@@ -45,7 +41,6 @@ public class ReceivedBookController {
         return receivedBookService.getReceivedBooksByPassportNumberAndSeries(passportNumber, passportSeries);
     }
 
-    @ResponseStatus(HttpStatus.OK)
     @GetMapping("/history/received/books/filter")
     public ResponseEntity<String> getHistoryReceivedBooksByPassportNumberAndSeries(
             @RequestParam("passportNumber") String passportNumber,
@@ -53,15 +48,13 @@ public class ReceivedBookController {
         return receivedBookService.getHistoryReceivedBooksByPassportNumberAndSeries(passportNumber, passportSeries);
     }
 
-    @ResponseStatus(HttpStatus.OK)
-    @GetMapping("all//received/books/filter")
+    @GetMapping("all/received/books/filter")
     public ResponseEntity<String> getAllReceivedBooks(
             @RequestParam("fromReceivedBookId") Long fromReceivedBookId,
             @RequestParam("toReceivedBookId") Long toReceivedBookId) {
         return receivedBookService.getAllReceivedBook(fromReceivedBookId, toReceivedBookId);
     }
 
-    @ResponseStatus(HttpStatus.OK)
     @DeleteMapping("/libraryCard/filter")
     public void deleteLibraryCardByPassportNumberAndSeries(
             @RequestParam("passportNumber") String passportNumber,

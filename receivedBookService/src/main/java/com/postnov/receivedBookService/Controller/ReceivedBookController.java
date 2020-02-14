@@ -2,14 +2,14 @@ package com.postnov.receivedBookService.Controller;
 
 import com.postnov.receivedBookService.Dto.ReceivedBookDto;
 import com.postnov.receivedBookService.Service.EntityService.ReceivedBookService;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
 
 @RestController
-@RequestMapping
 public class ReceivedBookController {
 
     private final ReceivedBookService receivedBookService;
@@ -19,7 +19,6 @@ public class ReceivedBookController {
         this.receivedBookService = receivedBookService;
     }
 
-    @ResponseStatus(HttpStatus.OK)
     @GetMapping("/received/books/filter")
     public List<ReceivedBookDto> getReceivedBooksByPassportSNumberAndSeries(
             @RequestParam("passportNumber") String passportNumber,
@@ -28,7 +27,6 @@ public class ReceivedBookController {
                 .getReceivedBooksByPassportNumberAndSeries(passportNumber, passportSeries);
     }
 
-    @ResponseStatus(HttpStatus.OK)
     @GetMapping("/history/received/books/filter")
     public List<ReceivedBookDto> getHistoryReceivedBooksByPassportNumberAndSeries(
             @RequestParam("passportNumber") String passportNumber,
@@ -37,7 +35,6 @@ public class ReceivedBookController {
                 .getHistoryReceivedBooksByPassportNumberAndSeries(passportNumber, passportSeries);
     }
 
-    @ResponseStatus(HttpStatus.OK)
     @GetMapping("/all/received/books/filter")
     public List<ReceivedBookDto> getAllReceivedBooks(
             @RequestParam("fromReceivedBookId") Long fromReceivedBookId,
@@ -46,7 +43,6 @@ public class ReceivedBookController {
                 .getAllReceivedBook(fromReceivedBookId, toReceivedBookId, false);
     }
 
-    @ResponseStatus(HttpStatus.OK)
     @GetMapping("/all/received/books/for/email/sender")
     public List<ReceivedBookDto> getAllReceivedBooksForEmailSender() throws Exception {
         return receivedBookService

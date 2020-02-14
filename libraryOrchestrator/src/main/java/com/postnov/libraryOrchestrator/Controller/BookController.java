@@ -3,7 +3,6 @@ package com.postnov.libraryOrchestrator.Controller;
 
 import com.postnov.libraryOrchestrator.Service.EntityService.BookService;
 import com.postnov.libraryOrchestrator.Service.ProduserService.BookProducerService;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,13 +20,11 @@ public class BookController {
         this.bookProducerService = bookProducerService;
     }
 
-    @ResponseStatus(HttpStatus.OK)
     @PostMapping(value = "add/books")
     public void addBooks(@RequestBody String addBookJson) {
         bookProducerService.send(addBookJson);
     }
 
-    @ResponseStatus(HttpStatus.OK)
     @GetMapping(value = "book/filter")
     public ResponseEntity<String> getBookByBookNameAndBookVolume(
             @RequestParam("bookName") String bookName,
@@ -35,7 +32,6 @@ public class BookController {
         return bookService.getBookDtoByBookNameAndBookVolume(bookName, bookVolume);
     }
 
-    @ResponseStatus(HttpStatus.OK)
     @GetMapping(value = "/books/filter")
     public ResponseEntity<String> getBooksFromBookIdToBookId(
             @RequestParam("fromBookId") Long fromBookId,
@@ -43,7 +39,6 @@ public class BookController {
         return bookService.getBooksDto(fromBookId, toBookId);
     }
 
-    @ResponseStatus(HttpStatus.OK)
     @GetMapping(value = "books/author/filter")
     public ResponseEntity<String> getBooksByAuthorNameAndSurname(
             @RequestParam("authorName") String authorName,
