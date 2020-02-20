@@ -66,7 +66,6 @@ public class EmailSenderService {
                     libraryCardDto.getClient().getPassport().getSeries())) {
                 LocalDateTime timeNow = LocalDateTime.now();
                 LocalDateTime timeDateOfBookReceiving = LocalDateTime.of(receivedBookDto.getDateOfBookReceiving(), LocalTime.now());
-//
                 if (timeNow.getYear() != timeDateOfBookReceiving.getYear() ||
                         timeNow.getDayOfYear() - timeDateOfBookReceiving.getDayOfYear() >=
                                 timeNow.getDayOfMonth()) {

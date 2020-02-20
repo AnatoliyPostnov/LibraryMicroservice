@@ -43,7 +43,6 @@ public class RabbitMQTest {
         factory.setHost(host);
         try (Connection connection = factory.newConnection();
              Channel channel = connection.createChannel()) {
-            channel.queueDeclare(queueName, false, false, false, null);
             channel.basicPublish("", queueName, null, json.getBytes(StandardCharsets.UTF_8));
         } catch (TimeoutException | IOException e) {
             e.printStackTrace();

@@ -5,13 +5,10 @@ import com.postnov.receivedBookService.Dto.ReceivedBookDto;
 import com.postnov.receivedBookService.Service.ConsumerSevice.ConsumeService;
 import com.postnov.receivedBookService.Service.EntityService.ReceivedBookMessageService;
 import com.postnov.receivedBookService.Service.EntityService.ReceivedBookService;
-import com.rabbitmq.client.Channel;
-import com.rabbitmq.client.DeliverCallback;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.scheduling.annotation.EnableScheduling;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -19,12 +16,9 @@ import java.util.Arrays;
 import java.util.List;
 
 @Service
-@EnableScheduling
 public class ConsumeServiceImpl implements ConsumeService {
 
     private final Logger logger = LoggerFactory.getLogger(ConsumeServiceImpl.class);
-
-    private final Channel channel;
 
     private final ReceivedBookService receivedBookService;
 
@@ -34,27 +28,16 @@ public class ConsumeServiceImpl implements ConsumeService {
     private String queueName;
 
     public ConsumeServiceImpl(
-            Channel channel,
             ReceivedBookService receivedBookService,
             ReceivedBookMessageService receivedBookMessageService) {
-        this.channel = channel;
         this.receivedBookService = receivedBookService;
         this.receivedBookMessageService = receivedBookMessageService;
     }
 
-    @Scheduled(fixedRate = 1000)
-    private void getMessage() {
-        DeliverCallback deliverCallback = (consumerTag, delivery) -> {
-            String message = new String(delivery.getBody(), "UTF-8");
-            parseMessage(message);
-        };
-        try {
-            channel.basicConsume(queueName, true, deliverCallback, consumerTag -> {
-            });
-        } catch (IOException e) {
-            logger.error(" [*] You catch IOException in Scheduled getMessage");
-            e.printStackTrace();
-        }
+    @RabbitListener(queues = "#{getQueueName}")
+    public void getJsonMessage(String message) throws IOException {
+        logger.info(" [x] Consume '" + message + "'");
+        parseMessage(message);
     }
 
     @Override

@@ -13,29 +13,11 @@ import java.util.concurrent.TimeoutException;
 @Configuration
 public class RabbitMQConfig {
 
-    @Value("${host}")
-    private String host;
-
     @Value("${inputQueueName}")
     private String queueName;
 
     @Bean
-    public ConnectionFactory connectionFactory() {
-        ConnectionFactory factory = new ConnectionFactory();
-        factory.setHost(host);
-        return factory;
-    }
-
-    @Bean
-    public Connection connection(ConnectionFactory connectionFactory)
-            throws IOException, TimeoutException {
-        return connectionFactory.newConnection();
-    }
-
-    @Bean
-    public Channel channel(Connection connection) throws IOException {
-        Channel channel = connection.createChannel();
-        channel.queueDeclare(queueName, false, false, false, null);
-        return channel;
+    public String getQueueName() {
+        return queueName;
     }
 }
