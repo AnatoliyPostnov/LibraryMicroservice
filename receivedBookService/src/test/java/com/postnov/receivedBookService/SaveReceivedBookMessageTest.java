@@ -59,7 +59,8 @@ public class SaveReceivedBookMessageTest {
     }
 
     @Test
-    public void receivedBookReturnBookDeleteBookDeleteLibraryCardTest() {
+    public void receivedBookReturnBookDeleteBookDeleteLibraryCardTest() throws InterruptedException {
+        Thread.sleep(5000);
         consumeService.parseMessage(DataForTest.RECEIVED_BOOK);
         consumeService.parseMessage(DataForTest.RETURN_BOOKS);
         consumeService.parseMessage(DataForTest.DELETE_BOOK);

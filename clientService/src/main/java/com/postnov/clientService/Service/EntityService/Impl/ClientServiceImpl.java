@@ -66,14 +66,12 @@ public class ClientServiceImpl implements ClientService {
         return clientRepository.save(client);
     }
 
-    @Transactional
     @Override
     public Client getClientByPassportId(Long passportId) {
         return clientRepository.findClientByPassportId(passportId).orElseThrow(
                 () -> new FindClientByPassportIdWasNotFoundException(passportId));
     }
 
-    @Transactional
     @Override
     public Client getClientById(Long Id) {
         return clientRepository.findClientById(Id).orElseThrow(

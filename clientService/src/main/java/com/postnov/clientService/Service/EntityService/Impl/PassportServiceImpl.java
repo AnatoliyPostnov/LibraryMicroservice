@@ -47,7 +47,6 @@ public class PassportServiceImpl implements PassportService {
         return passportRepository.save(passport);
     }
 
-    @Transactional
     @Override
     public Passport getPassportByPassportNumberAndSeries(String number, String series)
             throws FindPassportByPassportNumberAndSeriesWasNotFoundException {
@@ -55,7 +54,6 @@ public class PassportServiceImpl implements PassportService {
                 () -> new FindPassportByPassportNumberAndSeriesWasNotFoundException(number, series));
     }
 
-    @Transactional
     @Override
     public Passport getPassportById(Long Id) {
         return passportRepository.findPassportById(Id).orElseThrow(

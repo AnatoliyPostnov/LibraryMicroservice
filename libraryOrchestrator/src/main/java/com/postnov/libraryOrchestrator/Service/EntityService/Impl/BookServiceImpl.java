@@ -32,7 +32,6 @@ public class BookServiceImpl implements BookService {
         bookRepository.save(new AddBookJson(addBookJson));
     }
 
-    @Transactional
     @Override
     public List<Message> getJson() {
         List<AddBookJson> addBooksJson = bookRepository.findAll();

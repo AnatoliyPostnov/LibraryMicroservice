@@ -57,6 +57,7 @@ public class ReceivedBookServiceImpl implements ReceivedBookService {
         }
     }
 
+    @Transactional
     @Override
     public void deleteBookByBookNameAndVolume(String name, Integer volume) {
         try {
@@ -94,7 +95,6 @@ public class ReceivedBookServiceImpl implements ReceivedBookService {
         return convertReceivedBooksToReceivedBooksDto(receivedBooks, false);
     }
 
-    @Transactional
     @Override
     public List<ReceivedBookDto> getReceivedBooks(String number, String series, Boolean historyOrNot) {
         Long libraryCardId = libraryCardService.getLibraryCardIdByPassportNumberAndSeries(number, series);

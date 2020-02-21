@@ -131,28 +131,24 @@ public class BookServiceImpl implements BookService {
                 () -> new FindBookByIdExistingOfTheLibraryWasNotFoundException(Id)));
     }
 
-    @Transactional
     @Override
     public Book getReceivedBookById(Long Id) {
         return bookRepository.findReceivedBookById(Id).orElseThrow(
                 () -> new FindReceivedBookByIdWasNotFoundException(Id));
     }
 
-    @Transactional
     @Override
     public Book getReceivedBookByBookNameAndVolume(String name, Integer volume) {
         return bookRepository.findReceivedBookByBookNameAndVolume(name, volume).orElseThrow(
                 () -> new FindReceivedBookByNameAndVolumeWasNotFoundException(name, volume));
     }
 
-    @Transactional
     @Override
     public Book getBookByBookNameAndVolume(String name, Integer volume) {
         return bookRepository.findReturnBookByBookNameAndVolume(name, volume).orElseThrow(
                 () -> new FindReturnBookByNameAndVolumeWasNotFoundException(name, volume));
     }
 
-    @Transactional
     @Override
     public Book getBookById(Long Id) throws FindBookByIdWasNotFoundException {
         return bookRepository.findBookById(Id).orElseThrow(
@@ -169,7 +165,6 @@ public class BookServiceImpl implements BookService {
         return getBookByBookNameAndVolume(bookName, bookVolume).getId();
     }
 
-    @Transactional
     @Override
     public ListReceivedBookIdDto getReceivedBooksIdByBookName(String bookName) {
         return new ListReceivedBookIdDto(bookRepository.findReceivedBooksIdByBooksName(bookName));

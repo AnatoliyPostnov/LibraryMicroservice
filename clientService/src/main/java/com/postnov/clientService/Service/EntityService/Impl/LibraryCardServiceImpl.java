@@ -76,7 +76,6 @@ public class LibraryCardServiceImpl implements LibraryCardService {
         return libraryCardDto;
     }
 
-    @Transactional
     @Override
     public LibraryCard getLibraryCardById(Long Id) {
         return libraryCardRepository.findLibraryCardById(Id).orElseThrow(
@@ -90,7 +89,6 @@ public class LibraryCardServiceImpl implements LibraryCardService {
                 clientService.getClientByPassportNumberAndSeries(number, series).getId());
     }
 
-    @Transactional
     @Override
     public LibraryCard getLibraryCardByClientId(Long clientId) {
         return libraryCardRepository.findLibraryCardByClientId(

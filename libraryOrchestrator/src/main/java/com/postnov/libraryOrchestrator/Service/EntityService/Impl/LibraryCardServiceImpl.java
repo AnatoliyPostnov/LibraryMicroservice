@@ -38,7 +38,6 @@ public class LibraryCardServiceImpl implements LibraryCardService {
         libraryCardRepository.delete((AddLibraryCardJson) addLibraryCardJson);
     }
 
-    @Transactional
     @Override
     public List<Message> getJson() {
         List<AddLibraryCardJson> addLibraryCardsJson = libraryCardRepository.findAll();

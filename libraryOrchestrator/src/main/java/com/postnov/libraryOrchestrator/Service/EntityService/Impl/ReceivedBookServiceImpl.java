@@ -8,6 +8,7 @@ import com.postnov.libraryOrchestrator.Service.EntityService.ReceivedBookService
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -40,6 +41,7 @@ public class ReceivedBookServiceImpl implements ReceivedBookService {
         return receivedBookServiceClient.getAllReceivedBook(fromReceivedBookId, toReceivedBookId);
     }
 
+    @Transactional
     @Override
     public void saveJsonInDB(String json) {
         receivedBookRepository.save(new ReceivedBookMessage(json));
@@ -51,6 +53,7 @@ public class ReceivedBookServiceImpl implements ReceivedBookService {
         return receivedBookMessages.stream().map(x -> (Message) x).collect(Collectors.toList());
     }
 
+    @Transactional
     @Override
     public void deleteJson(Message json) {
         receivedBookRepository.delete((ReceivedBookMessage) json);

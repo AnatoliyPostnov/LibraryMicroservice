@@ -54,7 +54,7 @@ public class AuthorServiceImpl implements AuthorService {
     @Override
     public void deleteAuthorByBookId(Long bookId) {
         for (Author author : getAuthorsByBookId(bookId)) {
-            bookAuthorService.deleteBook_AuthorByAuthorId(author.getId());
+            bookAuthorService.deleteBookAuthorByAuthorId(author.getId());
             authorRepository.deleteAuthorById(author.getId());
         }
     }
@@ -64,7 +64,6 @@ public class AuthorServiceImpl implements AuthorService {
         return getAuthorsByBookId(book.getId());
     }
 
-    @Transactional
     @Override
     public List<Author> getAuthorsByBookId(Long bookId) {
         List<Long> authorsId = bookAuthorService.getAuthorsIdByBookId(bookId);
@@ -76,7 +75,6 @@ public class AuthorServiceImpl implements AuthorService {
         return authors;
     }
 
-    @Transactional
     @Override
     public List<Author> getAuthorsByNameAndSurname(String name, String surname) {
         List<Author> authors = authorRepository.findAuthorByNameAndSurname(name, surname);

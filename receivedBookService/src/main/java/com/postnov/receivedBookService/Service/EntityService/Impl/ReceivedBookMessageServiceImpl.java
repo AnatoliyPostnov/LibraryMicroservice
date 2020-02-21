@@ -5,6 +5,8 @@ import com.postnov.receivedBookService.Repository.ReceivedBookMessageRepository;
 import com.postnov.receivedBookService.Service.EntityService.ReceivedBookMessageService;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+
 @Service
 public class ReceivedBookMessageServiceImpl implements ReceivedBookMessageService {
 
@@ -14,6 +16,7 @@ public class ReceivedBookMessageServiceImpl implements ReceivedBookMessageServic
         this.receivedBookMessageRepository = receivedBookMessageRepository;
     }
 
+    @Transactional
     @Override
     public void saveReceivedBookMessage(String message) {
         receivedBookMessageRepository.save(new ReceivedBookMessage(message));

@@ -26,13 +26,11 @@ public class BookAuthorServiceImpl implements BookAuthorService {
         }
     }
 
-    @Transactional
     @Override
     public List<Long> getAuthorsIdByBookId(Long bookId) {
         return bookAuthorRepository.findAuthorsIdByBookId(bookId);
     }
 
-    @Transactional
     @Override
     public Long getBookIdByAuthorId(Long authorId) {
         return bookAuthorRepository.findBooksIdByAuthorId(authorId)
@@ -41,7 +39,7 @@ public class BookAuthorServiceImpl implements BookAuthorService {
 
     @Transactional
     @Override
-    public void deleteBook_AuthorByAuthorId(Long author_id) {
+    public void deleteBookAuthorByAuthorId(Long author_id) {
         bookAuthorRepository.deleteBookAuthorByAuthorId(author_id);
     }
 }
