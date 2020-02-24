@@ -41,11 +41,12 @@ public class ConsumeServiceImpl implements ConsumeService {
     }
 
     @Override
-    public void parseMessage(String message) {
+    public synchronized void parseMessage(String message) {
         List<String> messages = Arrays.asList(message.split("&"));
         try {
             switch (messages.get(0)) {
                 case "receivedBook":
+                    System.out.println(messages.get(1));
                     receivedBookService.receivedBook(mapFromJson(messages.get(1), ReceivedBookDto.class));
                     break;
                 case "returnBooks":

@@ -49,10 +49,14 @@ public class EmailSenderService {
     private void executeTask() throws Exception {
         List<LibraryCardDto> libraryCardsDto = new ArrayList<>();
 
-        for (ReceivedBookDto receivedBookDto : receivedBookClient.getAllReceivedBook()) {
-            if (!libraryCardsDto.contains(receivedBookDto.getLibraryCard())) {
-                libraryCardsDto.add(receivedBookDto.getLibraryCard());
+        try {
+            for (ReceivedBookDto receivedBookDto : receivedBookClient.getAllReceivedBook()) {
+                if (!libraryCardsDto.contains(receivedBookDto.getLibraryCard())) {
+                    libraryCardsDto.add(receivedBookDto.getLibraryCard());
+                }
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
         for (LibraryCardDto libraryCardDto : libraryCardsDto) {
@@ -72,7 +76,7 @@ public class EmailSenderService {
                     receivedBooksDtoByLibraryCard.add(receivedBookDto);
                 }
             }
-
+//
             if (receivedBooksDtoByLibraryCard.isEmpty()) {
                 continue;
             }

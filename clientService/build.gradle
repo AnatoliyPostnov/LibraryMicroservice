@@ -6,9 +6,13 @@ plugins {
 
 repositories {
     mavenCentral()
-//    maven {
-//        url = 'http://repo.maven.apache.org/maven2'
-//    }
+}
+
+bootJar {
+    baseName = 'ClientServiceApp'
+    group 'ClientService-group'
+    mainClassName = 'com.postnov.clientService.ClientService'
+    version = '1.0-SNAPSHOT'
 }
 
 group = 'com.postnov.library'
@@ -25,9 +29,7 @@ dependencies {
     compile 'org.junit.jupiter:junit-jupiter-engine:5.5.2'
     runtime 'org.postgresql:postgresql:42.2.8'
     testCompile 'org.springframework.boot:spring-boot-starter-test:2.2.1.RELEASE'
-
     implementation 'org.springframework.boot:spring-boot-starter-amqp'
-
 }
 
 tasks.withType(JavaCompile) {

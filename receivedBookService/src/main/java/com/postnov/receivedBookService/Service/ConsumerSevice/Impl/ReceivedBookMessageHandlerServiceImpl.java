@@ -7,6 +7,7 @@ import com.postnov.receivedBookService.Service.ConsumerSevice.ReceivedBookMessag
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @EnableScheduling
@@ -24,6 +25,7 @@ public class ReceivedBookMessageHandlerServiceImpl implements ReceivedBookMessag
     }
 
     @Scheduled(fixedRate = 15000)
+    @Transactional
     public void handleReceivedBookMessage() {
         for (ReceivedBookMessage receivedBookMessage : receivedBookMessageRepository.findAll()) {
             consumeService.parseMessage(receivedBookMessage.getMessage());

@@ -1,0 +1,13 @@
+create user postgres with password 'postgres';
+
+create database library_orchestrator;
+grant all privileges on database library_orchestrator to postgres;
+
+create database book_service;
+grant all privileges on database book_service to postgres;
+
+create database client_service;
+grant all privileges on database client_service to postgres;
+
+create database received_book;
+grant all privileges on database received_book to postgres;

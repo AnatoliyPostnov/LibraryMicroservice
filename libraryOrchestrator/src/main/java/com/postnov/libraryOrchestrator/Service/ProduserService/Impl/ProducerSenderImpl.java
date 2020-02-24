@@ -25,7 +25,7 @@ public class ProducerSenderImpl implements ProducerSender {
     }
 
     @Override
-    public void send(String json, String queueName, EntityService entityService) {
+    public synchronized void send(String json, String queueName, EntityService entityService) {
         try (Connection connection = connectionFactory.newConnection();
              Channel channel = connection.createChannel()) {
             channel.queueDeclare(queueName, false, false, false, null);

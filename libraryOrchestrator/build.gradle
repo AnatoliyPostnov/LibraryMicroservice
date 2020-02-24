@@ -6,9 +6,13 @@ plugins {
 
 repositories {
     mavenCentral()
-//    maven {
-//        url = 'http://repo.maven.apache.org/maven2'
-//    }
+}
+
+bootJar {
+    baseName = 'LibraryOrchestratorApp'
+    group 'LibraryOrchestrator-group'
+    mainClassName = 'com.postnov.libraryOrchestrator.LibraryOrchestrator'
+    version = '1.0-SNAPSHOT'
 }
 
 group = 'com.postnov.library'

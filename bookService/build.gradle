@@ -6,9 +6,13 @@ plugins {
 
 repositories {
     mavenCentral()
-//    maven {
-//        url = 'http://repo.maven.apache.org/maven2'
-//    }
+}
+
+bootJar {
+    baseName = 'BookServiceApp'
+    group 'BookService-group'
+    mainClassName = 'com.postnov.bookService.BookService'
+    version = '1.0-SNAPSHOT'
 }
 
 group = 'com.postnov.library'

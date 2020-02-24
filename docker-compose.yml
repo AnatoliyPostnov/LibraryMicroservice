@@ -1,0 +1,50 @@
+version: '3.1'
+
+services:
+  db:
+    image: postgres:9.6-alpine
+    restart: always
+    container_name: postgres-db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - 5432:5432
+    volumes:
+      - ./init:/docker-entrypoint-initdb.d/
+
+  rabbitMq:
+    image: rabbitmq:3-management
+    hostname: localhost
+    ports:
+      - 15672:15672
+      - 5672:5672
+
+  library-orchestrator:
+    build: ./libraryOrchestrator
+    ports:
+      - 8080:8080
+    environment:
+      spring.datasource.url: jdbc:db
+    links:
+      - db
+      -
+#  book-service:
+#    build: ./bookService
+#    ports:
+#      - 8081:8081
+#
+#  client-service:
+#    build: ./clientService
+#    ports:
+#      - 8082:8082
+#
+#  received-book-service:
+#    build: ./receivedBookService
+#    ports:
+#      - 8083:8083
+#
+#  email-sender:
+#    build: ./emailSender
+#    ports:
+#      - 8084:8084

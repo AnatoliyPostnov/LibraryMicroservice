@@ -14,6 +14,7 @@ import static org.junit.Assert.assertEquals;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @Sql(value = {"/create_data_after.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+@Sql(value = {"/create_data_after.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
 public class SaveReceivedBookMessageTest {
 
     private static final Long LIBRARY_CARD_ID = 6L;
@@ -60,7 +61,6 @@ public class SaveReceivedBookMessageTest {
 
     @Test
     public void receivedBookReturnBookDeleteBookDeleteLibraryCardTest() throws InterruptedException {
-        Thread.sleep(5000);
         consumeService.parseMessage(DataForTest.RECEIVED_BOOK);
         consumeService.parseMessage(DataForTest.RETURN_BOOKS);
         consumeService.parseMessage(DataForTest.DELETE_BOOK);
